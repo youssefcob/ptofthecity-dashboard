@@ -1,0 +1,285 @@
+@import "variables";
+
+h1 {
+  font-family: $helvetica;
+  font-weight: 600;
+  font-size: $h1;
+  letter-spacing: 0px;
+  color: $navy;
+
+}
+
+h2 {
+  font-family: $helvetica-light;
+  font-weight: lighter;
+  font-size: $h2;
+  letter-spacing: 0px;
+  color: #2C3233;
+}
+
+h3 {
+  font-family: $helvetica-light;
+  font-weight: lighter;
+  font-size: $h3;
+  letter-spacing: 0px;
+  color: #2C3233;
+}
+
+h4 {
+  font-family: $helvetica;
+  font-weight: lighter;
+  font-size: $h4;
+  letter-spacing: 0px;
+  color: #2C3233;
+}
+
+span {
+  font-family: $helvetica;
+  font-weight: lighter;
+  letter-spacing: 0px;
+  color: #2C3233;
+
+}
+
+p {
+  @extend h4;
+  line-height: 2.25rem;
+
+  @media screen and (max-width: 500px) {
+    line-height: 4rem;
+
+  }
+}
+
+li {
+  @extend h4;
+  line-height: 2.25rem;
+
+}
+
+a {
+  text-decoration: none;
+}
+
+.body {
+  font-family: $montserrat;
+  font-weight: 400;
+  font-size: $body;
+  letter-spacing: 0px;
+  font-stretch: extra-condensed;
+}
+
+.btnfont {
+  font-family: $montserrat;
+  font-weight: bolder;
+  font-size: $button;
+  letter-spacing: 0px;
+}
+
+.caption {
+  font-family: $montserrat;
+  font-weight: lighter;
+  font-size: $caption;
+  letter-spacing: 0px;
+}
+
+.ps {
+  font-family: $montserrat;
+  font-size: 0.875rem;
+  color: lighten($black, 20%);
+  margin: 0.6rem;
+}
+
+
+.btn {
+  background-color: $blue;
+  color: $black;
+  border: none;
+  padding: 1.25rem 0rem;
+  border-radius: 0.925rem;
+  text-align: center;
+  cursor: pointer;
+  @extend .btnfont;
+  
+
+  &.responsive {
+    @media screen and (max-width: 500px) {
+      padding: 2.5rem 0rem;
+      font-size: 1.5rem;
+    }
+
+  }
+
+  &.main {
+    margin-top: 2rem;
+    width: 30%;
+
+    @media screen and (max-width: 500px) {
+      width: 100%;
+      margin-left: none;
+    }
+  }
+
+  &.transparent {
+    background-color: transparent;
+    color: $black;
+    border: 1px solid $blue;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+      background-color: rgba(42, 192, 212, 0.30);
+      ;
+      color: $black;
+      transition: all 0.3s ease-in-out;
+
+    }
+  }
+
+}
+
+.sectionHeader {
+  @extend h1;
+  align-self: baseline;
+  margin-bottom: 1.25rem;
+  &.rtl{
+    text-align: right;
+  }
+
+
+}
+
+input[type="text"] {
+  font-family: $montserrat;
+  font-size: 1.125rem;
+
+  @media screen and (max-width: 800px) {
+    font-size: 13px;
+  }
+}
+
+.sectionHeader-m {
+  @extend .sectionHeader;
+
+    margin-left: 6.25rem;
+
+    @media screen and (max-width: 500px) {
+      margin-left: 2.5rem;
+    }
+  
+  &.rtl{
+    margin-left: 0;
+    padding-right: 6.25rem;
+
+    text-align: right;
+
+    @media screen and (max-width: 500px) {
+      padding-right: 2.5rem;
+  
+    }
+  }
+
+}
+
+.smallHeader {
+  font-family: $helvetica;
+  font-weight: 400;
+  font-size: 2.5rem;
+
+}
+
+.text {
+  font-family: $helvetica;
+  font-weight: lighter;
+  font-size: $h4;
+  letter-spacing: 0px;
+  color: $black;
+
+}
+
+.text-s {
+  font-family: $montserrat;
+  font-size: $h4;
+  font-weight: 400;
+  line-height: 200%;
+  color: $black;
+
+}
+
+.nav-font {
+  font-family: $montserrat;
+  font-size: $h4;
+  font-weight: 400;
+  line-height: 200%;
+  color: $black;
+}
+
+.landing-header {
+  @extend h1;
+  color: $white;
+
+  @media screen and (max-width: 600px) {
+    font-size: 6rem;
+
+  }
+}
+
+.header-t {
+  color: $navy;
+  font-family: $helvetica;
+  font-size: 1.5rem;
+  font-weight: 700;
+  &.rtl{
+    text-align: right
+  }
+}
+
+.header-q {
+  @extend .header-t;
+  font-weight: 500;
+  &.rtl{
+    text-align: right
+  }
+}
+
+.secondary-landing-header {
+  @extend h2;
+  color: $white;
+  &.rtl{
+    text-align: right
+  }
+
+  @media screen and (max-width: 500px) {
+    font-size: 4rem;
+
+  }
+
+}
+
+
+
+.input-field {
+  border: 1px solid $blue;
+  border-radius: 1.125rem;
+  background: $white;
+  outline: none;
+  height: 3.75rem;
+  padding: 1.25rem;
+
+
+}
+
+
+.star {
+  width: 300px;  
+  aspect-ratio: 1;
+  background: #F8CA00;
+  clip-path: polygon(50% 0,
+    calc(50%*(1 + sin(.4turn))) calc(50%*(1 - cos(.4turn))),
+    calc(50%*(1 - sin(.2turn))) calc(50%*(1 - cos(.2turn))),
+    calc(50%*(1 + sin(.2turn))) calc(50%*(1 - cos(.2turn))),
+    calc(50%*(1 - sin(.4turn))) calc(50%*(1 - cos(.4turn))) 
+   ); 
+  /* or more simple
+  clip-path: polygon(50% 0,79% 90%,2% 35%,98% 35%,21% 90%); 
+   */
+}
