@@ -51,6 +51,11 @@ p {
   }
 }
 
+strong {
+ @extend p;
+  font-weight: bold;
+}
+
 li {
   @extend h4;
   line-height: 2.25rem;
@@ -91,49 +96,77 @@ a {
 }
 
 
-.btn {
-  background-color: $blue;
-  color: $black;
-  border: none;
-  padding: 1.25rem 0rem;
-  border-radius: 0.925rem;
-  text-align: center;
-  cursor: pointer;
-  @extend .btnfont;
+// .btn {
+//   background-color: $blue;
+//   color: $black;
+//   border: none;
+//   padding: 1.25rem 0rem;
+//   border-radius: 0.925rem;
+//   text-align: center;
+//   cursor: pointer;
+//   @extend .btnfont;
   
 
-  &.responsive {
-    @media screen and (max-width: 500px) {
-      padding: 2.5rem 0rem;
-      font-size: 1.5rem;
-    }
+//   &.responsive {
+//     @media screen and (max-width: 500px) {
+//       padding: 2.5rem 0rem;
+//       font-size: 1.5rem;
+//     }
 
+//   }
+
+//   &.main {
+//     margin-top: 2rem;
+//     width: 30%;
+
+//     @media screen and (max-width: 500px) {
+//       width: 100%;
+//       margin-left: none;
+//     }
+//   }
+
+//   &.transparent {
+//     background-color: transparent;
+//     color: $black;
+//     border: 1px solid $blue;
+//     transition: all 0.3s ease-in-out;
+
+//     &:hover {
+//       background-color: rgba(42, 192, 212, 0.30);
+//       ;
+//       color: $black;
+//       transition: all 0.3s ease-in-out;
+
+//     }
+//   }
+
+// }
+
+.btn {
+  padding: 1rem;
+  background-color: $navy;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  @extend .btnfont;
+
+  &.delete {
+      background-color: red;
   }
 
-  &.main {
-    margin-top: 2rem;
-    width: 30%;
-
-    @media screen and (max-width: 500px) {
-      width: 100%;
-      margin-left: none;
-    }
+  &.cancel {
+      background-color: $grey;
+      color: black;
   }
 
-  &.transparent {
-    background-color: transparent;
-    color: $black;
-    border: 1px solid $blue;
-    transition: all 0.3s ease-in-out;
-
-    &:hover {
-      background-color: rgba(42, 192, 212, 0.30);
-      ;
-      color: $black;
-      transition: all 0.3s ease-in-out;
-
-    }
+  &.add {
+      background-color: $green;
   }
+
 
 }
 
