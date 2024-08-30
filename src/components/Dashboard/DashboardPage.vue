@@ -1,4 +1,16 @@
-<template>
+<script setup lang="ts">
+// import router from '@/router';
 
-    <h1>dashboard</h1>
+</script>
+<template>
+<div class="container">
+<router-view></router-view>
+</div>
 </template>
+<style>
+.container{
+    height:100vh;
+    width:100%;
+    overflow-y: scroll;
+}
+</style>
