@@ -4,14 +4,14 @@ import axios from "axios";
 const Http = {
     url: "http://localhost:8000/api/",
     methods: {
-        async get(url: string) {
+        async get(url: string, headers: any = {}) {
             url = Http.url + url;
             try {
-                const response = await axios.get(url);
-                return response.data;
+                const response = await axios.get(url, {headers});
+                return response
             } catch (error: any) {
-                throw (error.response.data.message);
-            }
+                console.error(error.response.data.message);
+                return error.response;            }
         },
         async post(url: string, data: any, headers: any = {}) {
             url = Http.url + url;
@@ -25,14 +25,16 @@ const Http = {
 
             }
         },
-        async put(url: string, data: any) {
+        async put(url: string, data: any, headers: any = {}) {
             url = Http.url + url;
 
             try {
-                const response = await axios.put(url, data);
-                return response.data;
-            } catch (error: any) {
+                const response = await axios.put(url, data, {headers});
+                return response;
+            } catch (error:any) {
                 console.error(error.response.data.message);
+                return error.response;
+
             }
         },
         async delete(url: string, headers: any = {}) {

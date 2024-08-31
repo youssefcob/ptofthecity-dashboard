@@ -19,9 +19,9 @@ onMounted(() => {
             <button class="nav-btn" :class="{ active: activeButton === '' }" @click="handleClick('')">
                 Dashboard
             </button>
-            <button class="nav-btn" :class="{ active: activeButton === 'reservations' }" @click="handleClick('reservations')">
+            <router-link to="/dashboard/reservations" class="nav-btn" :class="{ active: activeButton === 'reservations' }" @click="handleClick('reservations')">
                 Reservations
-            </button>
+            </router-link>
             <button class="nav-btn" :class="{ active: activeButton === 'eligibility' }" @click="handleClick('eligibility')">
                 Eligibility
             </button>

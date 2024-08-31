@@ -3,7 +3,7 @@ import LoginView from '../views/LoginView.vue'
 import DashboardView from '../views/DashboardView.vue'
 import Clinics from '../components/Dashboard/Clinics/Clinics.vue'
 import Services from '../components/Dashboard/Services/Services.vue'
-
+import Reservations from '../components/Dashboard/Reservations/Reservations.vue'
 import Insurances from '@/components/Dashboard/Insurances/Insurances.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,6 +33,10 @@ const router = createRouter({
         {
           path:'services',
           component: Services
+        },
+        {
+          path:'reservations',
+          component: Reservations
         }
       ]
     }

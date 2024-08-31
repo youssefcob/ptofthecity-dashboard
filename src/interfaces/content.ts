@@ -84,4 +84,29 @@ export type Insurance = {
     path:string
 }
 
+export type Reservation = {
+    id: number;
+    user_id: null | number;
+    clinic_id: number;
+    clinic: Clinic;
+    insurance_id: null | number;
+    first_name: string;
+    last_name: string;
+    gender: "male" | "female" | "other";
+    phone: string;
+    email: string;
+    method: null | string;
+    status: "pending" | "confirmed" | "cancelled";
+    payment: "self_pay" | "insurance";
+    insurance_company: null | string;
+    member_id: null | string;
+    date_in_unix: number;
+    about_your_pain: string;
+    reserved_by: "patient" | "staff";
+    guest: number;
+    created_at: string;
+    updated_at: string;
+    deleted_at: null;
+}
+
 

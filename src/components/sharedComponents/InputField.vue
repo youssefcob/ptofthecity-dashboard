@@ -136,18 +136,14 @@ defineExpose({
 
     .asterisk {
         left: 1.25rem;
-        @media screen and (max-width: 800px) {
-            left: 18px;
-        }
         top: 35%;
         color: rgba(0, 0, 0, 0.793);
         font-family: $montserrat;
         font-size: 1.125rem;
         pointer-events: none;
-
-
-      
-
+        @media screen and (max-width: 800px) {
+            left: 18px;
+        }
         @media screen and (max-width: 800px) {
             font-size: 13px;
         }
