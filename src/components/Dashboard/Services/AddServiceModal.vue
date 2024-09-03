@@ -21,9 +21,9 @@ const submit = async () => {
     let res = await submitService(id);
 
     console.log(res.data);
-    // if (res.status === 200) {
-    //     window.location.reload();
-    // }
+    if (res.status === 200) {
+        window.location.reload();
+    }
 
 
 }
