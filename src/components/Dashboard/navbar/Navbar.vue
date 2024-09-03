@@ -28,9 +28,9 @@ onMounted(() => {
             <button class="nav-btn" :class="{ active: activeButton === 'careers' }" @click="handleClick('careers')">
                 Careers
             </button>
-            <button class="nav-btn" :class="{ active: activeButton === 'messages' }" @click="handleClick('messages')">
+            <router-link to="/dashboard/messages" class="nav-btn" :class="{ active: activeButton === 'messages' }" @click="handleClick('messages')">
                 Messages
-            </button>
+            </router-link>
             <router-link to="/dashboard/clinics" class="nav-btn" :class="{ active: activeButton === 'clinics' }" @click="handleClick('clinics')">
                 Clinics
             </router-link>

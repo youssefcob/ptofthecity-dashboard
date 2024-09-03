@@ -37,6 +37,10 @@ const router = createRouter({
         {
           path:'reservations',
           component: Reservations
+        },
+        {
+          path:'messages',
+          component: () => import('../components/Dashboard/Messages/Messages.vue')
         }
       ]
     }

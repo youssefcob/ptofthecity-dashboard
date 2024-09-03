@@ -109,4 +109,16 @@ export type Reservation = {
     deleted_at: null;
 }
 
+export type Message = {
+    id: number;
+    name: string;
+    status: "unread" | "read";
+    email: string;
+    phone: string;
+    message: string;
+    subject:string;
+    created_at: string;
+    updated_at: string;
+    deleted_at: null;
+}
 
