@@ -29,6 +29,7 @@ const getReservations = async (status:string = 'pending') => {
     lastPage.value = res.data.last_page;
 
     if (res.status === 401) window.location.href = '/login';
+    return;
     // if (res.status === 200) { emit('newClinic', res.data); 
     if (res.status === 200) {
         return res.data;
@@ -44,7 +45,7 @@ const paginate = (page: number) => {
     if(currentPage.value == lastPage.value && page > 0) return;
     currentPage.value =  currentPage.value + page;
  
-    getReservations();
+    debouncedGetReservations();    // getReservations();
 }
 
 const changeReservations = (status: string) => {
@@ -52,6 +53,16 @@ const changeReservations = (status: string) => {
     currentPage.value = 1;
 
 }
+
+const debounce = (fn: Function, ms = 300) => {
+  let timeoutId: ReturnType<typeof setTimeout>;
+  return function (this: any, ...args: any[]) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => fn.apply(this, args), ms);
+  };
+};
+const debouncedGetReservations = debounce(getReservations, 300);
+
 
 onMounted(() => {
     getReservations();
