@@ -32,6 +32,14 @@ const changeReservationStatus = async (st: "pending" | "confirmed" | "cancelled"
     }
     
 };
+
+const toDate = (timestamp: number | string | undefined) => {
+    if (!timestamp) return '';
+    const date = new Date(timestamp);
+    const formattedDate = date.toLocaleDateString();
+    const formattedTime = date.toLocaleTimeString();
+    return `${formattedDate}  ${formattedTime}`;
+}
 </script>
 
 
@@ -57,8 +65,8 @@ const changeReservationStatus = async (st: "pending" | "confirmed" | "cancelled"
             <h3>Reservation Info:</h3>
 
             <p><strong>Clinic: </strong> {{ props.reservation?.clinic.name }}</p>
-            <p><strong>Date: </strong> {{ props.reservation?.date_in_unix }}</p>
-            <p><strong>Submitted at: </strong> {{ $props.reservation?.created_at }}</p>
+            <p><strong>Date: </strong> {{ toDate(props.reservation?.date_in_unix) }}</p>
+            <p><strong>Submitted at: </strong> {{ toDate($props.reservation?.created_at) }}</p>
             <p><strong>Payment: </strong> {{ props.reservation?.payment == 'self_pay' ? 'Self Pay' : 'Insurance' }}</p>
 
             <p v-if="$props.reservation?.about_your_pain"><strong>Description: </strong>{{
