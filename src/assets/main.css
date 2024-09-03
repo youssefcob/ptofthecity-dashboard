@@ -16,7 +16,6 @@ body:has(dialog[open]) {
 html {
   font-size:clamp(10px, 1vw, 17px);
   /* font-size:clamp(10px,1vw,30px); */
-  user-select: none;
 }
 
 .vue3-snackbar-message-title{

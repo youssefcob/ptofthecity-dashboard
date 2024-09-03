@@ -12,10 +12,10 @@ const clinics: Ref<ClinicsByCity> = ref({});
 const searchedClinics: Ref<ClinicsByCity> = ref({});
 const getClinics = async () => {
     let data = await Http.get('clinic/groupByLocation');
-    clinics.value = data;
-    searchedClinics.value = data;
-    clinic_cities.value = Object.keys(data);
-    // console.log(data)
+    clinics.value = data.data;
+    searchedClinics.value = data.data;
+    clinic_cities.value = Object.keys(data.data);
+    console.log(data)
 }
 
 const deleteClinic = (id: number) => {

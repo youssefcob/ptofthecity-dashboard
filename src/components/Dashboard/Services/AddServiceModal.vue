@@ -21,16 +21,16 @@ const submit = async () => {
     let res = await submitService(id);
 
     console.log(res.data);
-    if (res.status === 200) {
-        window.location.reload();
-    }
+    // if (res.status === 200) {
+    //     window.location.reload();
+    // }
 
 
 }
 
 const submitImage = async () => {
-    // console.log(form)
-    let formData = new FormData();
+    try{
+        let formData = new FormData();
     // img.append('image', image);
     let img = image.value as FormData;
     for (let [key, value] of img.entries()) {
@@ -45,14 +45,21 @@ const submitImage = async () => {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
     console.log(res);
-    if (res.status === 401) window.location.href = '/login';
+    // if (res.status === 401) window.location.href = '/login';
     // if (res.status === 200) { emit('newClinic', res.data); 
     if (res.status === 200) {
         return res.data;
         // window.location.reload();
     } else {
-        alert(res.data.error);
+    console.log(res);
+
+        alert(res);
     }
+    } catch (error) {
+        console.log(error)
+    }
+    // console.log(form)
+   
 }
 
 const submitService = async (id: string) => {
@@ -61,13 +68,15 @@ const submitService = async (id: string) => {
     });
 
     console.log(res);
-    if (res.status === 401) window.location.href = '/login';
+    // if (res.status === 401) window.location.href = '/login';
     // if (res.status === 200) { emit('newClinic', res.data); 
     if (res.status === 200) {
         return res;
         // window.location.reload();
     } else {
-        alert(res.data.error);
+    console.log(res);
+
+        alert(res);
     }
 }
 const cancel = () => {

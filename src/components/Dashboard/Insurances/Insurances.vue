@@ -23,8 +23,8 @@ const deleteInsurance = (id:number) => {
 
 const getInsurances = async () =>{
     let data = await Http.get('images/insurance');
-    insurances.value = data;
-    searchedInsurances.value = data;
+    insurances.value = data.data;
+    searchedInsurances.value = data.data;
     console.log(data)
 }
 

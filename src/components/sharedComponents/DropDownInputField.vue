@@ -28,6 +28,13 @@ let id = makeid(5);
 const input: Ref<string> = ref('');
 const show: Ref<boolean> = ref(false);
 
+const clear = () => {
+    input.value = '';
+}
+const hide = () => {
+    show.value = false;
+}
+
 const showDropDown = () => {
     filteredList.value = props.list;
     show.value = true;
@@ -38,6 +45,7 @@ const changeInput = (insurance: string) => {
     input.value = insurance;
     emit(`input`, input.value);
     show.value = false;
+    
 
 }
 
@@ -75,6 +83,11 @@ onMounted(() => {
 onUnmounted(() => {
     document.removeEventListener('click', handleClickOutside);
 });
+
+defineExpose({
+    clear,
+    hide
+})
 </script>
 
 <template>
@@ -82,12 +95,12 @@ onUnmounted(() => {
     <div :class="`drpdown-btn ${id}`" @click="showDropDown">
 
         <div class="required">
-            <input :dir="$dir()" :disabled="props.disabled" ref="inputField" class="input-field " @input="filterList()"
+            <input  :disabled="props.disabled" ref="inputField" class="input-field " @input="filterList()"
                 v-model="input" :style="`width:100%;$;${($props.error) ? 'border-color:red' : ''}`" type="text">
 
 
-            <label :class="`asterisk ${$dir()}`" v-show="!input">{{ $props.placeHolder }}<span v-if="props.required">&nbsp;*</span></label>
-            <label :class="`arrowdown ${$dir()}`" ref="arrowdown">
+            <label :class="`asterisk `" v-show="!input">{{ $props.placeHolder }}<span v-if="props.required">&nbsp;*</span></label>
+            <label :class="`arrowdown`" ref="arrowdown">
                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="13" viewBox="0 0 12 7" fill="none">
                     <path d="M1 1L6 6L11 1" stroke="black" stroke-width="0.5" stroke-linecap="round"
                         stroke-linejoin="round" />
@@ -99,7 +112,7 @@ onUnmounted(() => {
         </div>
         <div class="dropdown-wrapper {{ id }}" v-if="show && filteredList?.length && !$props.disabled">
             <div class="dropdown-list {{ identifier }}">
-                <div class="dropdown-item " :dir="$dir()" v-for="insurance in filteredList" :key="insurance"
+                <div class="dropdown-item "  v-for="insurance in filteredList" :key="insurance"
                     @click="changeInput(insurance)">{{ insurance }}</div>
 
             </div>

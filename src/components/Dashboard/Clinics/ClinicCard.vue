@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import type { Clinic, Schedule } from '@/interfaces/content';
+import type { Clinic, Schedule, Service } from '@/interfaces/content';
 import Http from '@/mixins/Http';
 import { ref, type Ref } from 'vue';
 import ClinicEdit from './ClinicEdit.vue';
+import Modal from '@/components/sharedComponents/Modal.vue';
+import AddServiceToClinic from './AddServiceToClinic.vue';
 
 
 const props = defineProps({
@@ -10,6 +12,7 @@ const props = defineProps({
         type: Object as () => Clinic,
     },
 });
+
 
 let schedule: Ref<Schedule | []> = ref(props.clinic?.schedule || []);
 let days: Ref<string[]> = ref(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']);
@@ -28,28 +31,41 @@ const edit = ref(false);
 const emit = defineEmits(['clinicDeleted']);
 const deleteClinic = async (id: number | undefined) => {
     // console.log(id);
-    if(!id) return;
-    let res = await Http.delete(`clinic/delete/${id}`,{
+    if (!id) return;
+    let res = await Http.delete(`clinic/delete/${id}`, {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
     // console.log(res);
-    if (res.status === 401 ) window.location.href = '/login';
+    if (res.status === 401) window.location.href = '/login';
     if (res.status === 200) emit('clinicDeleted', id);
     toggleDeleteModal();
     // window.location.reload();
 }
+
+const modal:Ref<InstanceType<typeof Modal> | null> = ref(null);
+
+const AddService = (service:Service) => {
+    props.clinic?.services.push(service);
+}
+
+const removeService = (service_id:number) => {
+    if(props.clinic?.services)
+        props.clinic.services = props.clinic?.services.filter(s => parseInt(s.id) !== service_id);
+}
 </script>
 
 <template>
+    <Modal ref="modal">
+        <AddServiceToClinic @deleteService="removeService($event)" @input="AddService($event)" :id="$props.clinic?.id" :services="$props.clinic?.services"/>
+    </Modal>
     <div v-if="!edit" class="card">
         <div class="info">
             <div class="header">
                 <h2>{{ props.clinic?.name }}</h2>
 
                 <div class="btns-wrapper">
-                    <button >Edit</button>
-                    <button v-if="!showDeleteModal" class="delete"
-                        @click="toggleDeleteModal()">Delete</button>
+                    <button>Edit</button>
+                    <button v-if="!showDeleteModal" class="delete" @click="toggleDeleteModal()">Delete</button>
                     <div class="delete-container" v-if="showDeleteModal">
                         <span>Are you sure you want to delete?</span>
                         <div>
@@ -77,6 +93,14 @@ const deleteClinic = async (id: number | undefined) => {
                     <p v-html="getHours(schedule[day.toLowerCase() as keyof typeof schedule])"></p>
                 </div>
             </div>
+
+            <div class="servicesHeader">
+                <h3>Services</h3>
+                <div class="btn add" @click="modal?.openModal()">Edit Services</div>
+            </div>
+            <div class="services">
+                <p v-for="service in props.clinic?.services" :key="service.id">{{ service.title }}</p>
+            </div>
         </div>
 
     </div>
@@ -93,6 +117,14 @@ const deleteClinic = async (id: number | undefined) => {
     .info {
         width: 100%;
 
+        .servicesHeader {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+
+
+        }
 
         .header {
             display: flex;
@@ -113,7 +145,7 @@ const deleteClinic = async (id: number | undefined) => {
         h3 {
             font-weight: bold;
             margin-top: 1rem;
-            ;
+
         }
 
         .day {
@@ -124,14 +156,15 @@ const deleteClinic = async (id: number | undefined) => {
     .btns-wrapper {
         display: flex;
         margin-left: auto;
-        // flex-direction: column;
         gap: 1rem;
-        // align-items: flex-end;
-        // justify-content: flex-end;
 
         button {
             padding: 1rem;
             background-color: $navy;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
 
             &.delete {
                 background-color: red;
@@ -142,10 +175,6 @@ const deleteClinic = async (id: number | undefined) => {
                 color: black;
             }
 
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
         }
     }
 

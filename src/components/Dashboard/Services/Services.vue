@@ -11,8 +11,8 @@ const searchedServices: Ref<Service[]> = ref([]);
 
 const getServices = async () => {
     let data = await Http.get('services');
-    services.value = data;
-    searchedServices.value = data;
+    services.value = data.data;
+    searchedServices.value = data.data;
     console.log(data)
 }
 

@@ -85,7 +85,7 @@ const deleteService = async (id: string | undefined) => {
         h3 {
             font-weight: bold;
             margin-top: 1rem;
-            ;
+            
         }
 
         .day {
@@ -96,14 +96,15 @@ const deleteService = async (id: string | undefined) => {
     .btns-wrapper {
         display: flex;
         margin-left: auto;
-        // flex-direction: column;
         gap: 1rem;
-        // align-items: flex-end;
-        // justify-content: flex-end;
 
         button {
             padding: 1rem;
             background-color: $navy;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
 
             &.delete {
                 background-color: red;
@@ -114,10 +115,6 @@ const deleteService = async (id: string | undefined) => {
                 color: black;
             }
 
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
         }
     }
 
