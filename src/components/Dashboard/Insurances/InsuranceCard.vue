@@ -2,7 +2,7 @@
 
 import { ref } from 'vue';
 
-import Insurance from '@/interfaces/Insurance';
+import {type Insurance} from '@/interfaces/content';
 import Http from '@/mixins/Http';
 const props = defineProps({
     insurance: {
@@ -17,7 +17,7 @@ const toggleDeleteModal = () => {
 
 const emit = defineEmits(['insuranceDeleted']);
 
-const deleteInsurance = async (id: string | undefined) => {
+const deleteInsurance = async (id: number | undefined) => {
     // console.log(id);
     if (!id) return;
     let res = await Http.delete(`images/insurance/${id}`, {
@@ -102,15 +102,16 @@ const deleteInsurance = async (id: string | undefined) => {
     .btns-wrapper {
         display: flex;
         margin-left: auto;
-        // flex-direction: column;
         gap: 1rem;
-        // align-items: flex-end;
-        // justify-content: flex-end;
 
         button {
             padding: 1rem;
             background-color: $navy;
-
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            
             &.delete {
                 background-color: red;
             }
@@ -120,10 +121,7 @@ const deleteInsurance = async (id: string | undefined) => {
                 color: black;
             }
 
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+       
         }
     }
 
