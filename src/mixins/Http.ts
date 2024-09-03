@@ -20,7 +20,7 @@ const Http = {
                 const response = await axios.post(url, data, {headers});
                 return response;
             } catch (error:any) {
-                console.error(error.response.data.message);
+                console.error(error);
                 return error.response;
 
             }
