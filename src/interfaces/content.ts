@@ -10,15 +10,16 @@ export type Media = {
 type day = {
     start: string,
     end: string,
+    off: boolean,
 }
 export type Schedule = {
-    monday: day | string,
-    tuesday: day | string,
-    wednesday: day | string,
-    thursday: day | string,
-    friday: day | string,
-    saturday: day | string,
-    sunday: day | string,
+    monday: day,
+    tuesday: day,
+    wednesday: day,
+    thursday: day,
+    friday: day,
+    saturday: day,
+    sunday: day,
 };
 
 export type Clinic = {
@@ -69,7 +70,7 @@ export type HttpReview = {
 }
 
 export type Service = {
-    id: string;
+    id?: string;
     path: string;
     title: string;
     description: string;
