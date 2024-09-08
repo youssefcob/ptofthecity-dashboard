@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import InputField from '@/components/sharedComponents/InputField.vue';
-import { ref, type Ref } from 'vue';
+import { onMounted, ref, type Ref } from 'vue';
 
+const props = defineProps({
+    list: {
+        type: Array as () => string[],
+    }
+});
 const input = ref('');
 
-const list = ref<string[]>([]);
+const list = ref<string[]>(props.list ||[]);
 
 const emit = defineEmits(['input']);
 
@@ -28,6 +33,10 @@ const deleteItem = (item: string,event:any) => {
     emit('input', list.value);
 
 }
+
+onMounted(() => {
+    emit('input', list.value);
+});
 </script>
 <template>
     <div class="addToList-wrapper">

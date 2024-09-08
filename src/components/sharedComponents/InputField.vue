@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { vMaska } from "maska/vue"
 
 const props = defineProps({
@@ -30,6 +30,9 @@ const emitInput = (e: Event) => {
     emit(`input`, (input.value));
 
 }
+onMounted(() => {
+    emit(`input`, (input.value));
+});
 const handleInput = (e:Event) => {
 
     if(props.date){
