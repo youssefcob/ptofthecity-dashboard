@@ -144,7 +144,12 @@ const addClinic = async () => {
 
     // width:80%;
     // height:80%;
+    
+    background-color: $grey;
+    padding: 2rem;
     .schedule {}
+
+ 
 
     .day {
         display: grid;
@@ -161,10 +166,6 @@ const addClinic = async () => {
         //     width:5rem;
         // }
     }
-
-    background-color: $grey;
-    padding: 2rem;
-
     .grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
