@@ -32,8 +32,13 @@ const Http = {
                 const response = await axios.put(url, data, {headers});
                 return response;
             } catch (error:any) {
-                console.error(error.response.data.message);
-                return error.response;
+                console.error(error.response);
+
+                if(error.response.status === 401){
+                    alert('Unauthorized');
+                    window.location.href = '/login';
+                }
+                throw error.response;
 
             }
         },
