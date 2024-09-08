@@ -1,14 +1,18 @@
 <script setup lang="ts">
+import Modal from '@/components/sharedComponents/Modal.vue';
 import type { Service } from '@/interfaces/content';
 import Http from '@/mixins/Http';
-import { ref } from 'vue';
-
+import { ref, type Ref } from 'vue';
+import EditService from './EditService.vue';
+import ChangeImage from './ChangeImage.vue';
 const props = defineProps({
     service: {
         type: Object as () => Service,
+        required: true
     },
 });
 
+const serviceState:Ref<Service> = ref({ ...props.service });
 
 const showDeleteModal = ref(false);
 const toggleDeleteModal = () => {
@@ -29,22 +33,36 @@ const deleteService = async (id: string | undefined) => {
     toggleDeleteModal();
     // window.location.reload();
 }
+
+const cancelEdit = ()=>{
+    editServiceModal.value?.closeModal();
+}
+
+const editServiceModal: Ref<InstanceType<typeof Modal> | null> = ref(null);
+const changeImageModal: Ref<InstanceType<typeof Modal> | null> = ref(null);
 </script>
 
 <template>
+    <Modal ref="editServiceModal">
+        <EditService :service="serviceState" @serviceChanged="serviceState = $event" @cancel="cancelEdit()"/>
+    </Modal>
+
+    <Modal ref="changeImageModal">
+        <ChangeImage @serviceChanged="serviceState = $event"   @cancel="changeImageModal?.closeModal()" :id="props.service.id"/>
+    </Modal>
     <div class="card">
         <div class="info">
             <div class="header">
-                <h2>{{ props.service?.title }}</h2>
+                <h2>{{ serviceState?.title }}</h2>
 
                 <div class="btns-wrapper">
-                    <button>Edit</button>
+                    <button  @click="editServiceModal?.openModal()">Edit</button>
                     <button v-if="!showDeleteModal" class="delete" @click="toggleDeleteModal()">Delete</button>
                     <div class="delete-container" v-if="showDeleteModal">
                         <span>Are you sure you want to delete?</span>
                         <div>
                             <button class="cancel" @click="toggleDeleteModal()">Cancel</button>
-                            <button class="delete" @click="deleteService(props.service?.id)">Yes</button>
+                            <button class="delete" @click="deleteService(serviceState?.id)">Yes</button>
                         </div>
                     </div>
                 </div>
@@ -52,15 +70,22 @@ const deleteService = async (id: string | undefined) => {
         </div>
     </div>
 
-    <p><strong>Description: </strong>{{ props.service?.description }}</p>
-    <p><strong>list header: </strong> {{ props.service?.listHeader }}</p>
-    <p><strong>list: </strong><span v-for="listItem in $props.service?.list"><br>{{ listItem }}</span></p>
-    <p><strong>image:</strong><a :href=" props.service?.path">Click Here!</a></p>
+    <p><strong>Description: </strong>{{ serviceState?.description }}</p>
+    <p><strong>list header: </strong> {{ serviceState?.listHeader }}</p>
+    <p><strong>list: </strong><span v-for="listItem in serviceState?.list"><br>{{ listItem }}</span></p>
+    <div class="img"><p><strong>image:</strong><a :href=" serviceState?.path">Click Here!</a></p> <div class="btn add" @click="changeImageModal?.openModal()">Change Image</div></div>
 </template>
 
 <style scoped lang="scss">
+
+.img{
+        display:flex;
+        justify-content: space-between;
+    }
 .card {
     display: flex;
+
+
 
     .info {
         width: 100%;
