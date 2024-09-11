@@ -5,6 +5,7 @@ import Clinics from '../components/Dashboard/Clinics/Clinics.vue'
 import Services from '../components/Dashboard/Services/Services.vue'
 import Reservations from '../components/Dashboard/Reservations/Reservations.vue'
 import Insurances from '@/components/Dashboard/Insurances/Insurances.vue'
+import Dashboard from '@/components/Dashboard/Dashboard/Dashboard.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -22,6 +23,10 @@ const router = createRouter({
       name: 'dashboard',
       component: DashboardView,
       children: [
+        {
+          path: '',
+          component: Dashboard
+        },
         {
           path: 'clinics',
           component: Clinics
@@ -41,6 +46,14 @@ const router = createRouter({
         {
           path:'messages',
           component: () => import('../components/Dashboard/Messages/Messages.vue')
+        },
+        {
+          path:'careers',
+          component: () => import('../components/Dashboard/Careers/Careers.vue')
+        },
+        {
+          path:'eligibility',
+          component: () => import('../components/Dashboard/Eligibility/Eligibility.vue')
         }
       ]
     }
