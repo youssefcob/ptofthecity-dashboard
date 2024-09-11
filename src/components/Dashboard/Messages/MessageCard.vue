@@ -1,22 +1,24 @@
 <script setup lang="ts">
 import type { Message } from '@/interfaces/content';
 import Http from '@/mixins/Http';
-import { ref } from 'vue';
+import { ref, type Ref } from 'vue';
 
 
 const props = defineProps({
     message: {
         type: Object as () => Message,
+        required: true
     },
 });
 
-const activeButton = ref(props.message?.status);
+const activeButton:Ref<number> = ref(props.message?.is_read);
 
-const changeMessageStatus = async (st: "read" | "unread") => {
-    activeButton.value = st;
-    let booleanSt = st === 'read' ? 'true' : 'false';
-
-    const res = await Http.put(`admin/message/${props.message?.id}/${booleanSt}`, {
+console.log(props.message);
+const changeMessageStatus = async (st: number) => {
+    if (activeButton.value === st) return;
+    let sta;
+    (st === 1) ? sta = 'true' : sta = 'false';
+    const res = await Http.put(`admin/message/${props.message?.id}/${sta}`, {
         status: st
     }, {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -26,6 +28,8 @@ const changeMessageStatus = async (st: "read" | "unread") => {
     if (res.status === 401) window.location.href = '/login';
     // if (res.status === 200) { emit('newClinic', res.data); 
     if (res.status === 200) {
+        activeButton.value = st;
+
         return res.data;
         // window.location.reload();
     } else {
@@ -43,8 +47,8 @@ const changeMessageStatus = async (st: "read" | "unread") => {
                 <h2>{{props.message?.subject}}</h2>
 
                 <div class="btns-wrapper">
-                    <button :class="{ active: activeButton === 'read' }" class="btn" @click="changeMessageStatus('read')">Read</button>
-                    <button :class="{ active: activeButton === 'unread' }" class="btn" @click="changeMessageStatus('unread')">UnRead</button>
+                    <button :class="{ active: activeButton === 1 }" class="btn" @click="changeMessageStatus(1)">Read</button>
+                    <button :class="{ active: activeButton === 0 }" class="btn" @click="changeMessageStatus(0)">Not Read</button>
 
                 </div>
             </div>

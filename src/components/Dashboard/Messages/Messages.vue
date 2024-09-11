@@ -12,7 +12,7 @@ const currentPage: Ref<number> = ref(1);
 const lastPage: Ref<number> = ref(0);
 
 
-const getMessages = async (status: string = 'true') => {
+const getMessages = async (status: string = 'false') => {
     const res = await Http.get(`admin/message/${status}?page=${currentPage.value}`, {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
@@ -31,7 +31,8 @@ const getMessages = async (status: string = 'true') => {
         return res.data;
         // window.location.reload();
     } else {
-        alert(res.data.error);
+        console.error(res);
+        alert(res);
     }
 
 }
@@ -76,7 +77,7 @@ onMounted(() => {
         <!-- <div class="reservation" v-for="reservation in reservationsList">
             {{ reservation.id }}
         </div> -->
-        <MessageCard class="reservation" v-for="message in MessagesList" :message="message"
+        <MessageCard class="reservation" v-for="message in MessagesList" :message="message" :key="message.id"
              />
     </div>
 

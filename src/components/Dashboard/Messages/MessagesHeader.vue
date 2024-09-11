@@ -37,10 +37,12 @@ const page = (direction: number) => {
             <button @click="page(1)" class="btn ">Next Page</button>
         </div>
         <div class="btn-search-wrapper">
+            <button class="btn" :class="{ active: activeButton === 'pending' }"
+            @click="handleClick('pending')">Pending</button>
+            
             <button class="btn" :class="{ active: activeButton === 'is_read' }"
                 @click="handleClick('is_read')">Read </button>
-            <button class="btn" :class="{ active: activeButton === 'pending' }"
-                @click="handleClick('pending')">Pending</button>
+     
            
         </div>
     </div>
