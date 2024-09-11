@@ -8,7 +8,8 @@ const handleClick = (buttonName: string) => {
 };
 
 onMounted(() => {
-    let windowLocation = window.location.pathname.split('/').pop();
+    let windowLocation = window.location.pathname.split('/')[2] || '';
+    console.log(windowLocation);
     if(windowLocation)handleClick(windowLocation);
 });
 </script>
@@ -16,18 +17,18 @@ onMounted(() => {
 <template>
     <nav>
         <div class="btns-wrapper">
-            <button class="nav-btn" :class="{ active: activeButton === '' }" @click="handleClick('')">
+            <router-link to="/dashboard" class="nav-btn" :class="{ active: activeButton === '' }" @click="handleClick('')">
                 Dashboard
-            </button>
+            </router-link>
             <router-link to="/dashboard/reservations" class="nav-btn" :class="{ active: activeButton === 'reservations' }" @click="handleClick('reservations')">
                 Reservations
             </router-link>
-            <button class="nav-btn" :class="{ active: activeButton === 'eligibility' }" @click="handleClick('eligibility')">
+            <router-link to="/dashboard/eligibility" class="nav-btn" :class="{ active: activeButton === 'eligibility' }" @click="handleClick('eligibility')">
                 Eligibility
-            </button>
-            <button class="nav-btn" :class="{ active: activeButton === 'careers' }" @click="handleClick('careers')">
+            </router-link>
+            <router-link to="/dashboard/careers" class="nav-btn" :class="{ active: activeButton === 'careers' }" @click="handleClick('careers')">
                 Careers
-            </button>
+            </router-link>
             <router-link to="/dashboard/messages" class="nav-btn" :class="{ active: activeButton === 'messages' }" @click="handleClick('messages')">
                 Messages
             </router-link>

@@ -11,15 +11,15 @@ import ReservationCard from './ReservationCard.vue';
 //     },
 // });
 
-const reservationsList:Ref<Reservation[]> = ref([]);
+const reservationsList: Ref<Reservation[]> = ref([]);
 
-const currentPage:Ref<number> = ref(1);
+const currentPage: Ref<number> = ref(1);
 
-const lastPage:Ref<number> = ref(0);
+const lastPage: Ref<number> = ref(0);
 
 
 
-const getReservations = async (status:string = 'pending') => {
+const getReservations = async (status: string = 'pending') => {
     const res = await Http.get(`reservation/status/${status}?page=${currentPage.value}`, {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
@@ -27,9 +27,11 @@ const getReservations = async (status:string = 'pending') => {
     reservationsList.value = res.data.data;
     // currentPage.value = res.data.current_page;
     lastPage.value = res.data.last_page;
-
-    if (res.status === 401) window.location.href = '/login';
-    return;
+    console.log(res.data.data);
+    if (res.status === 401) {
+        window.location.href = '/login';
+        return;
+    }
     // if (res.status === 200) { emit('newClinic', res.data); 
     if (res.status === 200) {
         return res.data;
@@ -41,10 +43,10 @@ const getReservations = async (status:string = 'pending') => {
 }
 
 const paginate = (page: number) => {
-    if(currentPage.value == 1 && page < 0) return;
-    if(currentPage.value == lastPage.value && page > 0) return;
-    currentPage.value =  currentPage.value + page;
- 
+    if (currentPage.value == 1 && page < 0) return;
+    if (currentPage.value == lastPage.value && page > 0) return;
+    currentPage.value = currentPage.value + page;
+
     debouncedGetReservations();    // getReservations();
 }
 
@@ -55,11 +57,11 @@ const changeReservations = (status: string) => {
 }
 
 const debounce = (fn: Function, ms = 300) => {
-  let timeoutId: ReturnType<typeof setTimeout>;
-  return function (this: any, ...args: any[]) {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => fn.apply(this, args), ms);
-  };
+    let timeoutId: ReturnType<typeof setTimeout>;
+    return function (this: any, ...args: any[]) {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => fn.apply(this, args), ms);
+    };
 };
 const debouncedGetReservations = debounce(getReservations, 300);
 
@@ -69,13 +71,13 @@ onMounted(() => {
 });
 </script>
 <template>
-    <ReservationsHeader :page="currentPage" @paginate="paginate($event)" @statusChanged="changeReservations($event)"/>
+    <ReservationsHeader :page="currentPage" @paginate="paginate($event)" @statusChanged="changeReservations($event)" />
 
     <div class="reservations-container">
-        <!-- <div class="reservation" v-for="reservation in reservationsList">
-            {{ reservation.id }}
-        </div> -->
-        <ReservationCard class="reservation" v-for="reservation in reservationsList" :reservation="reservation" :key="reservation.id"/>
+        <template v-for="reservation in reservationsList">
+            <ReservationCard class="reservation" v-if="reservation.clinic" :reservation="reservation"
+                :key="reservation.id" />
+        </template>
     </div>
 
 </template>
@@ -86,14 +88,15 @@ onMounted(() => {
     gap: 2rem;
 
     .reservation-city-wrapper {
-    padding: 2rem;
-    padding-top:1rem;
+        padding: 2rem;
+        padding-top: 1rem;
         display: flex;
         flex-direction: column;
         gap: 1rem;
     }
-    h2{
-        color:$navy;
+
+    h2 {
+        color: $navy;
     }
 
     .reservation {

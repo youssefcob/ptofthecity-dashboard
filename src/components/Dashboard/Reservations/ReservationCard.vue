@@ -2,6 +2,7 @@
 import type { Reservation } from '@/interfaces/content';
 import Http from '@/mixins/Http';
 import { ref } from 'vue';
+import moment from 'moment-timezone';
 
 
 const props = defineProps({
@@ -35,10 +36,16 @@ const changeReservationStatus = async (st: "pending" | "confirmed" | "cancelled"
 
 const toDate = (timestamp: number | string | undefined) => {
     if (!timestamp) return '';
-    const date = new Date(timestamp);
-    const formattedDate = date.toLocaleDateString();
-    const formattedTime = date.toLocaleTimeString();
-    return `${formattedDate}  ${formattedTime}`;
+    // const date = new Date(timestamp);
+    // const formattedDate = date.toLocaleDateString();
+    // const formattedTime = date.toLocaleTimeString();
+    // return `${formattedDate}  ${formattedTime}`;
+
+    const nyDate = moment.tz(timestamp, 'America/New_York');
+    // console.log('New York Date:', nyDate.format());
+
+    // Return the formatted date string
+    return nyDate.format('YYYY-MM-DD HH:mm:ss');
 }
 </script>
 
@@ -47,7 +54,7 @@ const toDate = (timestamp: number | string | undefined) => {
     <div class="card">
         <div class="info">
             <div class="header">
-                <h2>{{props.reservation?.clinic.name}}</h2>
+                <h2>{{props.reservation?.clinic?.name}}</h2>
 
                 <div class="btns-wrapper">
                     <button :class="{ active: activeButton === 'pending' }" class="btn" @click="changeReservationStatus('pending')">Pending</button>

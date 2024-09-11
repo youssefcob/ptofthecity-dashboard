@@ -13,7 +13,7 @@ const props = defineProps({
     clinic: {
         type: Object as () => Clinic,
         required: true
-        
+
     },
 });
 
@@ -57,7 +57,9 @@ const AddService = (service: Service) => {
 
 const removeService = (service_id: number) => {
     if (clinicState?.services)
-        clinicState.services = clinicState?.services.filter(s => parseInt(s.id) !== service_id);
+        clinicState.services = clinicState?.services.filter(s => {
+            if (s.id) parseInt(s.id) !== service_id
+        });
 }
 
 const updateClinic = (clinic: Clinic) => {
@@ -80,7 +82,8 @@ const updateClinic = (clinic: Clinic) => {
     </Modal>
 
     <Modal ref="editClinicModal">
-        <EditClinic :id="clinicState.id" :clinic="clinicState" @close="editClinicModal?.closeModal()" @clinicUpdated="updateClinic($event)" />
+        <EditClinic :id="clinicState.id" :clinic="clinicState" @close="editClinicModal?.closeModal()"
+            @clinicUpdated="updateClinic($event)" />
     </Modal>
     <div v-if="!edit" class="card">
         <div class="info">
@@ -145,7 +148,8 @@ const updateClinic = (clinic: Clinic) => {
     .info {
         width: 100%;
 
-        .servicesHeader,.scheduleHeader {
+        .servicesHeader,
+        .scheduleHeader {
             display: flex;
             justify-content: space-between;
             align-items: center;

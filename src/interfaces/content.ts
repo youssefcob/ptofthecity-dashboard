@@ -113,7 +113,8 @@ export type Reservation = {
 export type Message = {
     id: number;
     name: string;
-    status: "unread" | "read";
+    // status: "unread" | "read";
+    is_read: number;
     email: string;
     phone: string;
     message: string;
@@ -123,3 +124,41 @@ export type Message = {
     deleted_at: null;
 }
 
+export type Count = {
+    title: string;
+    count: number;
+}
+
+export type Career = {
+    city: string;
+    state: string;
+    zip_code: string;
+    street_address: string;
+    email:string;
+    id: number;
+    job: string;
+    first_name: string;
+    last_name: string;
+    is_read: number;
+    phone: string;
+    created_at: string;
+    resume: string;
+}
+
+export type Eligibility = {
+    id: number;
+    first_name: string;
+    last_name: string;
+    gender:string;
+    phone: string;
+    email: string;
+    dob: string;
+    created_at: string;
+    insurance_card_back: string;
+    insurance_card_front: string;
+    insurance_provider: string;
+    medicaid_id: string;
+    member_id: string;
+    medicare_id: string;
+    status: string;
+}

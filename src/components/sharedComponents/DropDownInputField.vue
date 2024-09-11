@@ -8,7 +8,8 @@ const props = defineProps({
     placeHolder: String,
     watch: Boolean,
     disabled: Boolean,
-    error: Boolean
+    error: Boolean,
+    default: String,
 });
 let filteredList = ref(props.list);
 const makeid = (length: number) => {
@@ -28,13 +29,6 @@ let id = makeid(5);
 const input: Ref<string> = ref('');
 const show: Ref<boolean> = ref(false);
 
-const clear = () => {
-    input.value = '';
-}
-const hide = () => {
-    show.value = false;
-}
-
 const showDropDown = () => {
     filteredList.value = props.list;
     show.value = true;
@@ -45,7 +39,6 @@ const changeInput = (insurance: string) => {
     input.value = insurance;
     emit(`input`, input.value);
     show.value = false;
-    
 
 }
 
@@ -77,17 +70,16 @@ onMounted(() => {
     };
     document.addEventListener('click', handleClickOutside);
 
+    if(props.default){
+        input.value = props.default;
+    }
+
 
 });
 
 onUnmounted(() => {
     document.removeEventListener('click', handleClickOutside);
 });
-
-defineExpose({
-    clear,
-    hide
-})
 </script>
 
 <template>
@@ -100,7 +92,7 @@ defineExpose({
 
 
             <label :class="`asterisk `" v-show="!input">{{ $props.placeHolder }}<span v-if="props.required">&nbsp;*</span></label>
-            <label :class="`arrowdown`" ref="arrowdown">
+            <label :class="`arrowdown `" ref="arrowdown">
                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="13" viewBox="0 0 12 7" fill="none">
                     <path d="M1 1L6 6L11 1" stroke="black" stroke-width="0.5" stroke-linecap="round"
                         stroke-linejoin="round" />
