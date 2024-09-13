@@ -54,6 +54,14 @@ const router = createRouter({
         {
           path:'eligibility',
           component: () => import('../components/Dashboard/Eligibility/Eligibility.vue')
+        },
+        {
+          path: 'jobs',
+          component: () => import('../components/Dashboard/Jobs/Jobs.vue')
+        },
+        {
+          path: 'faqs',
+          component: () => import('../components/Dashboard/Faqs/Faqs.vue')
         }
       ]
     }

@@ -120,7 +120,7 @@ onMounted(() => {
     flex-direction: column;
     gap: 3rem;
     padding: 3rem;
-    overflow: hidden;
+    // overflow: hidden;
 
     h2 {
         color: $navy;

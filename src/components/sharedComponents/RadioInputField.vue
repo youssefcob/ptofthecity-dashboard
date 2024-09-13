@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { on } from 'events';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 
 
 const props = defineProps<{
     title: string,
     options: string[],
-    error: boolean
+    error: boolean,
+    checked: string
 }>();
 const emit = defineEmits(['change']);
 onMounted(() => {
@@ -36,6 +36,15 @@ onMounted(() => {
     }
 });
 
+const checkIfChecked = (option:string) => {
+    if(props.checked == option){
+        emit('change', option);
+        return true;
+    } else {
+        return false;
+    }
+}
+
 
 
 </script>
@@ -45,8 +54,8 @@ onMounted(() => {
         <span class="text" :style="props.error? `color:red;`:``">{{ props.title }}:</span>
         <div class="options">
             <div class="option" v-for="option in props.options" :key="option">
-                <input type="radio" @change="" :name="props.title" :value="option" />
-                <div class="radio-input"  :for="option"></div>
+                <input type="radio" @change="" :checked="checkIfChecked(option)" :name="props.title" :value="option" />
+                <div class="radio-input" :class="`${(props.checked == option)? 'active':''}`"  :for="option"></div>
                 <label class="text" :style="props.error? `color:red;`:``">{{ option }}</label>
             </div>
         </div>

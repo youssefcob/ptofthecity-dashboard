@@ -162,3 +162,12 @@ export type Eligibility = {
     medicare_id: string;
     status: string;
 }
+
+export type Job = {
+    id: number;
+    title: string;
+    description: string;
+    isAvailable: number;
+    created_at: string;
+    updated_at: string;
+}

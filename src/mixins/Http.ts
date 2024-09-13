@@ -35,8 +35,8 @@ const Http = {
                 console.error(error.response);
 
                 if(error.response.status === 401){
-                    alert('Unauthorized');
-                    window.location.href = '/login';
+                    // alert('Unauthorized');
+                    // window.location.href = '/login';
                 }
                 throw error.response;
 

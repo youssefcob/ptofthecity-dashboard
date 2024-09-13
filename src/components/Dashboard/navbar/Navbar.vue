@@ -41,9 +41,16 @@ onMounted(() => {
             <router-link to="/dashboard/insurances" class="nav-btn" :class="{ active: activeButton === 'insurances' }" @click="handleClick('insurances')">
                 Insurances
             </router-link>
+            <router-link to="/dashboard/jobs" class="nav-btn" :class="{ active: activeButton === 'jobs' }" @click="handleClick('jobs')">
+                Jobs
+            </router-link>
+            <router-link to="/dashboard/faqs" class="nav-btn" :class="{ active: activeButton === 'faqs' }" @click="handleClick('faqs')">
+                FAQs
+            </router-link>
             <button class="nav-btn" :class="{ active: activeButton === 'whoWeAre' }" @click="handleClick('whoWeAre')">
                 Who We Are
             </button>
+    
 
         </div>
     </nav>
