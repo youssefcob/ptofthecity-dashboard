@@ -62,6 +62,10 @@ const router = createRouter({
         {
           path: 'faqs',
           component: () => import('../components/Dashboard/Faqs/Faqs.vue')
+        },
+        {
+          path: 'admins',
+          component: () => import('../components/Dashboard/Admins/Admins.vue')
         }
       ]
     }

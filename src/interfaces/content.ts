@@ -49,6 +49,7 @@ export type Clinic = {
     // ]
 }
 
+
 export type Review = {
     author_name: string,
     author_url: string,
@@ -170,4 +171,19 @@ export type Job = {
     isAvailable: number;
     created_at: string;
     updated_at: string;
+}
+
+export type FAQ = {
+    id: number;
+    question: string;
+    answer: string;
+    category: string;
+    is_main: number;
+    created_at: string;
+    updated_at: string;
+}
+
+export type FaqsCateogorized = {
+        [key: string]:FAQ[]
+        
 }
