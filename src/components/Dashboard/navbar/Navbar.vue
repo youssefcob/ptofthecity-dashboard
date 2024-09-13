@@ -12,11 +12,19 @@ onMounted(() => {
     console.log(windowLocation);
     if(windowLocation)handleClick(windowLocation);
 });
+
+const SuperAdmin = () => {
+    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    return user.role === 'super_admin';
+}
 </script>
 
 <template>
     <nav>
         <div class="btns-wrapper">
+            <router-link v-if="SuperAdmin()" to="/dashboard/admins" class="nav-btn" :class="{ active: activeButton === 'admins' }" @click="handleClick('admins')">
+                Manage Admins
+            </router-link>
             <router-link to="/dashboard" class="nav-btn" :class="{ active: activeButton === '' }" @click="handleClick('')">
                 Dashboard
             </router-link>

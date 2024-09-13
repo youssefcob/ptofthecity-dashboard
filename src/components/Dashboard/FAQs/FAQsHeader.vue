@@ -1,0 +1,62 @@
+<script setup lang="ts">
+import Modal from '@/components/sharedComponents/Modal.vue';
+import { ref, type Ref } from 'vue';
+import AddFaqModal from './AddFaqModal.vue';
+const emit = defineEmits(['search','faqAdded']);
+const search = (event: any) => {
+    emit('search',event.target.value);
+}
+
+const modal:Ref<InstanceType<typeof Modal> | null> = ref(null);
+
+const handleNewFaq = (faq:any) => {
+    emit('faqAdded',faq);
+    modal.value?.closeModal();
+}
+</script>
+
+<template>
+            <Modal ref="modal" >
+                <AddFaqModal @faqAdded="handleNewFaq($event)"/>
+            </Modal>
+
+    <div class="header">
+        <h1>FAQs</h1>
+
+        <div class="btn-search-wrapper">
+            <button class="add" @click="modal?.openModal()">Add FAQ</button>
+
+        </div>
+    </div>
+</template>
+
+<style scoped lang="scss">
+
+.header {
+    padding:1rem;
+    // height:30px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    display:flex;
+    justify-content:space-between;
+    .btn-search-wrapper{
+        display:flex;
+        gap:2rem;
+        align-items: center;
+        .add{
+            padding:1rem;
+            background-color: $green;
+            color:white;
+            border:none;
+            border-radius:10px;
+            cursor:pointer;
+        }
+        input{
+            padding:1rem;
+            border-radius:10px;
+            border:none;
+            width:20rem;
+        }
+    }
+}
+
+</style>

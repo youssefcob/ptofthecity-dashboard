@@ -187,3 +187,14 @@ export type FaqsCateogorized = {
         [key: string]:FAQ[]
         
 }
+
+export type User = {
+    created_at: string;
+    deleted_at: null | string;
+    first_name: string;
+    id: number;
+    last_name: string;
+    phone: string;
+    role: string;
+    updated_at: string;
+};

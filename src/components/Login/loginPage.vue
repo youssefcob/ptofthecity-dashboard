@@ -4,7 +4,7 @@ import { reactive, ref, type Ref } from 'vue';
 // const password:Ref<HTMLInputElement | null> = ref(null);
 const show = ref(true);
 const loginform = reactive({
-    username: '+201111111111',
+    username: 'admin',
     password: 'admin'
 })
 
@@ -15,17 +15,25 @@ const login = async () => {
     try {
         let res = await Http.post('admin/login', loginform);
         console.log(res);
-        localStorage.setItem('user', JSON.stringify(res.user));
-        localStorage.setItem('token', res.data.tokens.admin_token);
+        if (res.status === 200) {
+            localStorage.setItem('user', JSON.stringify(res.data.user));
+            localStorage.setItem('token', res.data.tokens.token);
+            window.location.href = '/dashboard';
 
-        // Redirect to /dashboard
-        window.location.href = '/dashboard';
-    } catch (e: any) {
-        console.log(e);
-                error.value.push(e);
+        } else {
+            error.value.push(res.data.message);
             setTimeout(() => {
                 error.value = [];
             }, 3000);
+        }
+
+        // Redirect to /dashboard
+    } catch (e: any) {
+        console.log(e);
+        error.value.push(e);
+        setTimeout(() => {
+            error.value = [];
+        }, 3000);
     }
 }
 

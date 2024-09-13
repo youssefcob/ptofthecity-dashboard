@@ -18,8 +18,14 @@ const getServices = async () => {
 
 const deleteService = (id: number) => {
     console.log(id);
-    services.value = services.value.filter((service: Service) => parseInt(service.id) !== id);
-    searchedServices.value = searchedServices.value.filter((service: Service) => parseInt(service.id) !== id);
+    services.value = services.value.filter((service: Service) => {
+        if (!service.id) return;
+        return parseInt(service.id) !== id
+    });
+    searchedServices.value = searchedServices.value.filter((service: Service) => {
+        if (!service.id) return;
+        return parseInt(service.id) !== id
+    });
 }
 
 const search = (searchTerm: string) => {
@@ -59,14 +65,15 @@ onMounted(() => {
     gap: 2rem;
 
     .service-city-wrapper {
-    padding: 2rem;
-    padding-top:1rem;
+        padding: 2rem;
+        padding-top: 1rem;
         display: flex;
         flex-direction: column;
         gap: 1rem;
     }
-    h2{
-        color:$navy;
+
+    h2 {
+        color: $navy;
     }
 
     .service {

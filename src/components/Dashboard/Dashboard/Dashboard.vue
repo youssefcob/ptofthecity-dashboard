@@ -22,7 +22,7 @@ onMounted(() => {
 
 
 <template>
-    <div class="container">
+    <div class="grid-container">
         <div class="grid-item">
             <div class="box">
                 <h2>Reservations</h2>
@@ -68,46 +68,46 @@ onMounted(() => {
                     </div>
                 </div>
             </div>
-            <div class="grid-item">
-                <div class="box">
-                    <h2>Careers</h2>
-                    <div class="count-wrapper">
-                        <div class="count">
-                            <span> {{ getCountByTitle('career_applications_0') }} </span>
-                            <h3>Not Viewed</h3>
-
-                        </div>
-                        <div class="count">
-                            <span> {{ getCountByTitle('career_applications_1') }} </span>
-                            <h3>Viewed</h3>
-
-                        </div>
-
-
+        </div>
+        <div class="grid-item">
+            <div class="box">
+                <h2>Careers</h2>
+                <div class="count-wrapper">
+                    <div class="count">
+                        <span> {{ getCountByTitle('career_applications_0') }} </span>
+                        <h3>Not Viewed</h3>
 
                     </div>
+                    <div class="count">
+                        <span> {{ getCountByTitle('career_applications_1') }} </span>
+                        <h3>Viewed</h3>
+
+                    </div>
+
+
+
                 </div>
             </div>
-            <div class="grid-item">
-                <div class="box">
-                    <h2>Messages</h2>
-                    <div class="count-wrapper">
-                        <div class="count">
-                            <span> {{ getCountByTitle('messages_0') }} </span>
-                            <h3>Not Viewed</h3>
+        </div>
+        <div class="grid-item">
+            <div class="box">
+                <h2>Messages</h2>
+                <div class="count-wrapper">
+                    <div class="count">
+                        <span> {{ getCountByTitle('messages_0') }} </span>
+                        <h3>Not Viewed</h3>
 
-                        </div>
-                        <div class="count">
-                            <span> {{ getCountByTitle('messages_1') }} </span>
-                            <h3>Viewed</h3>
-
-                        </div>
-
-
+                    </div>
+                    <div class="count">
+                        <span> {{ getCountByTitle('messages_1') }} </span>
+                        <h3>Viewed</h3>
 
                     </div>
 
+
+
                 </div>
+
             </div>
         </div>
     </div>
@@ -115,11 +115,11 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
-.container {
+.grid-container {
     display: flex;
     flex-direction: column;
     gap: 3rem;
-    padding: 3rem;
+    padding: 1rem;
     // overflow: hidden;
 
     h2 {
@@ -138,9 +138,8 @@ onMounted(() => {
             justify-content: center;
             border-radius: 10px;
             gap: 1rem;
-            padding: 1rem;
             background-color: $blue;
-            padding: 3rem;
+            // padding: 3rem;
             flex-grow: 1;
             aspect-ratio: 1 / 0.5;
 
