@@ -4,11 +4,17 @@
     <meta charset="UTF-8">
     <link rel="icon" href="/ptofthecity-dashboard/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vite App</title>
+    <title>Dashboard</title>
     <script type="module" crossorigin src="/ptofthecity-dashboard/assets/index-CbLkjkan.js"></script>
     <link rel="stylesheet" crossorigin href="/ptofthecity-dashboard/assets/index-CNNQJrhP.css">
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app"></div>
+    <script>   
+
+      if (window.location.pathname.startsWith('/ptofthecity-vue/')) {
+        window.location.pathname = '/ptofthecity-vue/index.html';
+      }
+    </script>
   </body>
 </html>
