@@ -4,8 +4,8 @@ import { reactive, ref, type Ref } from 'vue';
 // const password:Ref<HTMLInputElement | null> = ref(null);
 const show = ref(true);
 const loginform = reactive({
-    username: 'admin',
-    password: 'admin'
+    username: '',
+    password: ''
 })
 
 const error: Ref<string[]> = ref([]);
