@@ -61,7 +61,7 @@ const router = createRouter({
         },
         {
           path: 'faqs',
-          component: () => import('../components/Dashboard/Faqs/Faqs.vue')
+          component: () => import('../components/Dashboard/FAQs/FAQs.vue')
         },
         {
           path: 'admins',

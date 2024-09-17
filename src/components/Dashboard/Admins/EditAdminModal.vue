@@ -64,7 +64,7 @@ const getAdminRole = () => {
     <InputField placeHolder="First Name" @input="form.first_name = $event" :value="props.admin.first_name" />
     <InputField placeHolder="Last Name" @input="form.last_name = $event" :value="props.admin.last_name"/>
     <InputField placeHolder="User Name" @input="form.phone = $event" :value="props.admin.phone"/>
-    <RadioInputField class="radio-field" title="Role" :options="roleOptions" @change="assignRole($event)" :checked="getAdminRole()" :error="false" />
+    <RadioInputField class="radio-field" title="Role" :options="roleOptions" @change="assignRole($event)" :checked="getAdminRole() || ''" :error="false" />
 
     <button class="btn" @click="submit">Submit</button>
 </div>

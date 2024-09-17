@@ -74,7 +74,6 @@ const HandleFileUpload = (e: Event) => {
                 </svg></span>
 
         </div>
-        <!-- <div class="file-placeHolder" :style="`${$dir() === 'ltr'? 'left:1.25rem':'right:1.25rem'};`">  -->
         <div :class="`file-placeHolder`" > 
             
             <label>

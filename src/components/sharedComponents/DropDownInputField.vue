@@ -80,6 +80,14 @@ onMounted(() => {
 onUnmounted(() => {
     document.removeEventListener('click', handleClickOutside);
 });
+
+const clear = () => {
+    input.value = '';
+}
+
+defineExpose({
+    clear,
+});
 </script>
 
 <template>

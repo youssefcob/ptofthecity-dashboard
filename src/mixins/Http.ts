@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 const Http = {
-    url: "http://localhost:8000/api/",
+    url: import.meta.env.VITE_API_URL,
     methods: {
         async get(url: string, headers: any = {}) {
             url = Http.url + url;
