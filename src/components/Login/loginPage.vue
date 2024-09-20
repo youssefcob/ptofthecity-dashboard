@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Http from '@/mixins/Http';
 import { reactive, ref, type Ref } from 'vue';
+import { useRouter } from 'vue-router';
 // const password:Ref<HTMLInputElement | null> = ref(null);
 const show = ref(true);
 const loginform = reactive({
@@ -10,6 +11,8 @@ const loginform = reactive({
 
 const error: Ref<string[]> = ref([]);
 
+const router = useRouter();
+
 const login = async () => {
     console.log(loginform);
     try {
@@ -18,7 +21,7 @@ const login = async () => {
         if (res.status === 200) {
             localStorage.setItem('user', JSON.stringify(res.data.user));
             localStorage.setItem('token', res.data.tokens.token);
-            window.location.href = '/dashboard';
+            router.push('/dashboard');
 
         } else {
             error.value.push(res.data.message);

@@ -55,9 +55,9 @@ const SuperAdmin = () => {
             <router-link to="/dashboard/faqs" class="nav-btn" :class="{ active: activeButton === 'faqs' }" @click="handleClick('faqs')">
                 FAQs
             </router-link>
-            <button class="nav-btn" :class="{ active: activeButton === 'whoWeAre' }" @click="handleClick('whoWeAre')">
-                Who We Are
-            </button>
+            <router-link to="/dashboard/content" class="nav-btn" :class="{ active: activeButton === 'content' }" @click="handleClick('content')">
+                Content
+            </router-link>
     
 
         </div>

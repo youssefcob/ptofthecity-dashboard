@@ -7,19 +7,20 @@ const Http = {
         async get(url: string, headers: any = {}) {
             url = Http.url + url;
             try {
-                const response = await axios.get(url, {headers});
+                const response = await axios.get(url, { headers });
                 return response
             } catch (error: any) {
                 console.error(error.response.data.message);
-                return error.response;            }
+                return error.response;
+            }
         },
         async post(url: string, data: any, headers: any = {}) {
             url = Http.url + url;
 
             try {
-                const response = await axios.post(url, data, {headers});
+                const response = await axios.post(url, data, { headers });
                 return response;
-            } catch (error:any) {
+            } catch (error: any) {
                 console.error(error);
                 return error.response;
 
@@ -29,12 +30,12 @@ const Http = {
             url = Http.url + url;
 
             try {
-                const response = await axios.put(url, data, {headers});
+                const response = await axios.put(url, data, { headers });
                 return response;
-            } catch (error:any) {
+            } catch (error: any) {
                 console.error(error.response);
 
-                if(error.response.status === 401){
+                if (error.response.status === 401) {
                     // alert('Unauthorized');
                     // window.location.href = '/login';
                 }
@@ -42,11 +43,14 @@ const Http = {
 
             }
         },
-        async delete(url: string, headers: any = {}) {
+        async delete(url: string, headers: any = {}, body: any = {}) {
             url = Http.url + url;
 
             try {
-                const response = await axios.delete(url, {headers});
+                const response = await axios.delete(url, {
+                    headers: headers,
+                    data: body
+                });
                 return response;
             } catch (error: any) {
                 console.error(error.response.data.message);
@@ -54,7 +58,7 @@ const Http = {
             }
         },
     }
-    
+
 }
 
 export default Http.methods as any;
