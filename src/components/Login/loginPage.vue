@@ -13,11 +13,19 @@ const error: Ref<string[]> = ref([]);
 
 const router = useRouter();
 
+const checkIfLoggedIn = () => {
+    if (localStorage.getItem('token')) {
+        router.push('/dashboard');
+    }
+}
+
 const login = async () => {
     console.log(loginform);
     try {
         let res = await Http.post('admin/login', loginform);
-        console.log(res);
+        // console.log(res);
+        // console.log("________________________");
+        
         if (res.status === 200) {
             localStorage.setItem('user', JSON.stringify(res.data.user));
             localStorage.setItem('token', res.data.tokens.token);

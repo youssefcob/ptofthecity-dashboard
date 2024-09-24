@@ -7,6 +7,7 @@ import Modal from '@/components/sharedComponents/Modal.vue';
 import AddServiceToClinic from './AddServiceToClinic.vue';
 import EditSchedule from './EditSchedule.vue';
 import EditClinic from './EditClinic.vue';
+import UpdateImageModal from './UpdateImageModal.vue';
 
 
 const props = defineProps({
@@ -50,6 +51,7 @@ const deleteClinic = async (id: number | undefined) => {
 const serviceModal: Ref<InstanceType<typeof Modal> | null> = ref(null);
 const scheduleModal: Ref<InstanceType<typeof Modal> | null> = ref(null);
 const editClinicModal: Ref<InstanceType<typeof Modal> | null> = ref(null);
+const updateImageModal: Ref<InstanceType<typeof Modal> | null> = ref(null);
 
 const AddService = (service: Service) => {
     clinicState?.services.push(service);
@@ -68,6 +70,8 @@ const updateClinic = (clinic: Clinic) => {
     schedule.value = clinic.schedule;
     scheduleModal.value?.closeModal();
     editClinicModal.value?.closeModal();
+    updateImageModal.value?.closeModal();
+
 }
 </script>
 
@@ -75,6 +79,10 @@ const updateClinic = (clinic: Clinic) => {
     <Modal ref="serviceModal">
         <AddServiceToClinic @deleteService="removeService($event)" @input="AddService($event)" :id="clinicState?.id"
             :services="clinicState?.services" />
+    </Modal>
+
+    <Modal ref="updateImageModal">
+        <UpdateImageModal @newClinic="updateClinic($event)" :id="clinicState?.id" />
     </Modal>
 
     <Modal ref="scheduleModal">
@@ -113,6 +121,11 @@ const updateClinic = (clinic: Clinic) => {
             <p><strong>Place ID: </strong>{{ clinicState?.place_id }}</p>
             <p><strong>Description:</strong> {{ clinicState?.summary }}</p>
 
+            <div class="scheduleHeader">
+                <h3>Image: <span><a v-if="clinicState?.image" :href="clinicState?.image">Click Here!</a> </span></h3>
+                <div class="btn add" @click="updateImageModal?.openModal()">Edit Image</div>
+            </div>
+            <br>
             <div class="scheduleHeader">
                 <h3>Schedule</h3>
                 <div class="btn add" @click="scheduleModal?.openModal()">Edit Schedule</div>
@@ -154,6 +167,12 @@ const updateClinic = (clinic: Clinic) => {
             justify-content: space-between;
             align-items: center;
             margin-top: 1rem;
+
+            a:hover{
+              color:blue;
+              cursor: pointer;  
+            }
+            
 
 
         }
