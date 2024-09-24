@@ -5,25 +5,17 @@ import Modal from '@/components/sharedComponents/Modal.vue';
 import Http from '@/mixins/Http';
 import { ref, onMounted, type Ref } from 'vue';
 
-const images = ref([]);
+
+
+const props = defineProps<{
+    content: any
+}>();
+const images = ref(props.content);
 const modal:Ref<InstanceType<typeof Modal> | null> = ref(null);
 
 const formImage = ref(new FormData());
 
-const getLandingPageImages = async () => {
-    let res = await Http.get('content/carousel');
-    console.log(res);
 
-    if (res.status === 401) window.location.href = '/login';
-    if (res.status === 200) {
-
-        if (res.data.body) {
-            images.value = res.data.body;
-        } else {
-            console.log('No images found');
-        }
-    }
-}
 
 const submitImage = async () => {
     let formData = new FormData();
@@ -62,7 +54,7 @@ const deleteImage = async (image:string) => {
 }
 
 onMounted(() => {
-    getLandingPageImages();
+    // getLandingPageImages();
 });
 </script>
 
@@ -85,7 +77,7 @@ onMounted(() => {
 
         <div class="card">
             <ul>
-                <li v-for="(image,index) in images" :key="index">
+                <li v-for="(image,index) in props.content" :key="index">
                    <a :href="image" target="_blank"> Image {{ index + 1 }} </a>
                    <div class="btn delete" @click="deleteImage(image)">Delete</div>
                 </li>

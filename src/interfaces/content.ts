@@ -45,6 +45,7 @@ export type Clinic = {
     place_id:string,
     reviews: Review[],
     user_ratings_total: number,
+    image: string,
     // }
     // ]
 }
