@@ -37,8 +37,9 @@ const emit = defineEmits([`input`]);
 
 const changeInput = (insurance: string) => {
     input.value = insurance;
+    // show.value = false;
+
     emit(`input`, input.value);
-    show.value = false;
 
 }
 

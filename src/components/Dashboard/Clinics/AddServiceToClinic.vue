@@ -56,7 +56,7 @@ const addServiceToClinic = async () => {
 }
 const addToList = async () => {
 
-
+    if(input.value === '') return;
     let service = await addServiceToClinic();
     list.value.push(input.value);
     listInput.value?.clear();
@@ -87,13 +87,14 @@ const RemoveServiceFromClinic = async (item:string)=>{
 
     );
 
-    console.log(res);
+    if(res.status === 401) window.location.href = '/login';
+    else 
 
     return service_id
 
 }
 const deleteItem = async (item: string, event: any) => {
-    event.stopPropagation(); // Stop event propagation
+    // event.stopPropagation(); // Stop event propagation
 
     console.log(item)
     let service_id = await RemoveServiceFromClinic(item);
@@ -108,7 +109,7 @@ const deleteItem = async (item: string, event: any) => {
 
 const assignInput = (event: any) => {
     input.value = event;
-    event.stopPropagation();
+    // event.stopPropagation();
 }
 
 </script>
