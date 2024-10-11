@@ -10,18 +10,18 @@ type Content = {
     body: any
 }
 
-let content:Ref<Content[]> = ref([{title:'aua',body:'auo'}]);
+let content:Content[] = reactive([]);
 
 
 const getContent = async () => {
     let data = await Http.get('content')
     console.log(data.data)
-    content.value = data.data;
+    content = data.data;
 }
-let carousel:Ref<any> = ref([]);
+let carousel:Ref<string[]> = ref([]);
 let whoWeAre:Ref<any> = ref([]);
 const filterContent = (title:string):any => {
-    const result = content.value.filter((item: any) => item.title === title)[0];
+    const result = content.filter((item: any) => item.title === title)[0];
     console.log(result);
     return result.body;
     // console.log(carousel.value);

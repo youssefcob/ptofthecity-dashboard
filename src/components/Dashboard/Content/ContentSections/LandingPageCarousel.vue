@@ -3,19 +3,21 @@
 import FileInputField from '@/components/sharedComponents/FileInputField.vue';
 import Modal from '@/components/sharedComponents/Modal.vue';
 import Http from '@/mixins/Http';
-import { ref, onMounted, type Ref } from 'vue';
+import { ref, onMounted, type Ref, watch } from 'vue';
 
 
 
 const props = defineProps<{
     content: any
 }>();
-const images = ref(props.content);
+const imagesState = ref(props.content);
 const modal:Ref<InstanceType<typeof Modal> | null> = ref(null);
 
 const formImage = ref(new FormData());
 
-
+watch(() => props.content, (newContent) => {
+    imagesState.value = newContent;
+});
 
 const submitImage = async () => {
     let formData = new FormData();
@@ -34,7 +36,9 @@ const submitImage = async () => {
 
     if (res.status === 401) window.location.href = '/login';
     if (res.status === 200) {
-        images.value = res.data.body;
+        imagesState.value = res.data.body;
+        modal.value?.closeModal()
+
     }
 }
 
@@ -49,7 +53,9 @@ const deleteImage = async (image:string) => {
 
     if (res.status === 401) window.location.href = '/login';
     if (res.status === 200) {
-        images.value = res.data.body;
+        console.log(res.data.body);
+
+        imagesState.value = res.data.body;
     }
 }
 
@@ -77,7 +83,7 @@ onMounted(() => {
 
         <div class="card">
             <ul>
-                <li v-for="(image,index) in props.content" :key="index">
+                <li v-for="(image,index) in imagesState" :key="index">
                    <a :href="image" target="_blank"> Image {{ index + 1 }} </a>
                    <div class="btn delete" @click="deleteImage(image)">Delete</div>
                 </li>

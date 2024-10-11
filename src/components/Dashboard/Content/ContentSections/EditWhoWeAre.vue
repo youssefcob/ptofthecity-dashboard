@@ -11,7 +11,7 @@ const props = defineProps<{
 
 <div class="wrapper">
 
-    <InputField placeHolder="Number of Clinics" :value="props.whoWeAre.clinics" />
+    <!-- <InputField placeHolder="Number of Clinics" :value="(props.whoWeAre.clinics).toString()" /> -->
 </div>
 </template>
 
