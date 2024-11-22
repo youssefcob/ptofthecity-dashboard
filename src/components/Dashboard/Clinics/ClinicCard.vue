@@ -8,6 +8,7 @@ import AddServiceToClinic from './AddServiceToClinic.vue';
 import EditSchedule from './EditSchedule.vue';
 import EditClinic from './EditClinic.vue';
 import UpdateImageModal from './UpdateImageModal.vue';
+import AddMoment from './AddMoment.vue';
 
 
 const props = defineProps({
@@ -52,7 +53,7 @@ const serviceModal: Ref<InstanceType<typeof Modal> | null> = ref(null);
 const scheduleModal: Ref<InstanceType<typeof Modal> | null> = ref(null);
 const editClinicModal: Ref<InstanceType<typeof Modal> | null> = ref(null);
 const updateImageModal: Ref<InstanceType<typeof Modal> | null> = ref(null);
-
+const addMomentToClinicModal: Ref<InstanceType<typeof Modal> | null> = ref(null);
 const AddService = (service: Service) => {
     clinicState?.services.push(service);
 }
@@ -71,6 +72,29 @@ const updateClinic = (clinic: Clinic) => {
     scheduleModal.value?.closeModal();
     editClinicModal.value?.closeModal();
     updateImageModal.value?.closeModal();
+    addMomentToClinicModal.value?.closeModal();
+
+}
+
+const deleteMoment = async (id: number) => {
+    try {
+        let res = await Http.delete(`clinic/media/${id}`, {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        });
+        console.log(res);
+        if (res.status === 200) {
+            console.log(res.data);
+        clinicState.media = clinicState.media.filter(media => media.id !== id);
+        } else {
+            console.log(res);
+
+            alert(res);
+        }
+
+    } catch (error) {
+        console.log(error)
+    }
+    // console.log(form)
 
 }
 </script>
@@ -91,6 +115,11 @@ const updateClinic = (clinic: Clinic) => {
 
     <Modal ref="editClinicModal">
         <EditClinic :id="clinicState.id" :clinic="clinicState" @close="editClinicModal?.closeModal()"
+            @clinicUpdated="updateClinic($event)" />
+    </Modal>
+
+    <Modal ref="addMomentToClinicModal">
+        <AddMoment :id="clinicState.id" :clinic="clinicState" @close="editClinicModal?.closeModal()"
             @clinicUpdated="updateClinic($event)" />
     </Modal>
     <div v-if="!edit" class="card">
@@ -127,6 +156,20 @@ const updateClinic = (clinic: Clinic) => {
             </div>
             <br>
             <div class="scheduleHeader">
+                <h3>Moments: </h3>
+                <div class="btn add" @click="addMomentToClinicModal?.openModal()">Add Moment</div>
+            </div>
+            <div class="moments">
+                <ul>
+                    <li v-for="(moment, index) in clinicState?.media" :key="moment.id"><a :href="moment.path">Moment
+                            {{ index }}</a>
+                        <div class="btn delete" @click="deleteMoment(moment.id)">delete</div>
+                    </li>
+                </ul>
+                <!-- {{ clinicState?.media }} -->
+            </div>
+            <br>
+            <div class="scheduleHeader">
                 <h3>Schedule</h3>
                 <div class="btn add" @click="scheduleModal?.openModal()">Edit Schedule</div>
 
@@ -158,6 +201,31 @@ const updateClinic = (clinic: Clinic) => {
 .card {
     display: flex;
 
+    .moments {
+        ul {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+
+            li {
+                list-style: none;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                a {
+                    text-decoration: underline;
+                    color: black;
+                }
+
+                .btn {
+                    padding: 0.3rem;
+                }
+            }
+        }
+    }
+
     .info {
         width: 100%;
 
@@ -168,11 +236,11 @@ const updateClinic = (clinic: Clinic) => {
             align-items: center;
             margin-top: 1rem;
 
-            a:hover{
-              color:blue;
-              cursor: pointer;  
+            a:hover {
+                color: blue;
+                cursor: pointer;
             }
-            
+
 
 
         }

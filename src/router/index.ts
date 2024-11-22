@@ -65,11 +65,16 @@ const router = createRouter({
         },
         {
           path: 'admins',
-          component: () => import('@/components/Dashboard/Admins/Admins.vue')
+          component: () => import('@/components/Dashboard/Admins/Admins.vue'),
+        
         },
         {
           path: 'content',
           component: () => import('@/components/Dashboard/Content/Content.vue')
+        },
+        {
+          path:'admin/emails',
+          component:() => import('@/components/Dashboard/Admins/Emails/Emails.vue')
         }
       ]
     }

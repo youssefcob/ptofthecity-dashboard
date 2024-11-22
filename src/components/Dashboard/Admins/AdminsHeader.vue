@@ -19,6 +19,7 @@ const modal:Ref<InstanceType<typeof Modal> | null> = ref(null);
         <h1>Admins</h1>
 
         <div class="btn-search-wrapper">
+            <router-link to="/dashboard/admin/emails" class="add">Admin Emails</router-link>
             <input type="text" placeholder="Search Admins" class="search" @input="search($event)">
             <button class="add" @click="modal?.openModal()">Add Admin</button>
 
