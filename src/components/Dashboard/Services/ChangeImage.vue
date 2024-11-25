@@ -52,7 +52,7 @@ const submit = async () => {
 <template>
     <div class="changeImage">
         <FileInputField @input="image = $event" placeHolder="Image" />
-        <Btn  @click="submit()" :loading="loading">Submit</Btn>
+        <Btn @click="submit()" :loading="loading">Submit</Btn>
     </div>
 </template>
 
