@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Btn from '@/components/sharedComponents/btn.vue';
 import FileInputField from '@/components/sharedComponents/FileInputField.vue';
 import Http from '@/mixins/Http';
 import { ref } from 'vue';
@@ -14,6 +15,8 @@ const props = defineProps({
 
 const emit = defineEmits(['newClinic']);
 
+const loading = ref(false);
+
 const submitImage = async () => {
     try {
         let formData = new FormData();
@@ -27,9 +30,11 @@ const submitImage = async () => {
                 break;
             }
         }
+        loading.value = true;
         let res = await Http.post(`clinic/image/${props.id}`, formData, {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
         });
+        loading.value = false;
         console.log(res);
         // if (res.status === 401) window.location.href = '/login';
         // if (res.status === 200) { emit('newClinic', res.data); 
@@ -55,7 +60,7 @@ const submitImage = async () => {
 <template>
     <div class="wrapper">
         <div class="field"><FileInputField placeHolder="Upload Image" @input="image = $event" /></div>
-        <div class="btn" @click="submitImage()">Submit Image</div>
+        <Btn class="btn" @click="submitImage()" :loading="loading">Submit Image</Btn>
     </div>
 </template>
 

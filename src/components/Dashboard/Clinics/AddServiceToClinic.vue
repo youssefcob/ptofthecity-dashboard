@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Btn from '@/components/sharedComponents/btn.vue';
 import DropDownInputField from '@/components/sharedComponents/DropDownInputField.vue';
 import InputField from '@/components/sharedComponents/InputField.vue';
 import type { Service } from '@/interfaces/content';
@@ -42,6 +43,7 @@ const emit = defineEmits(['input','deleteService']);
 const listInput: Ref<InstanceType<typeof DropDownInputField> | null> = ref(null);
 
 const addServiceToClinic = async () => {
+    loading.value = true;
     const res = await Http.post(`clinic/addService/${props.id}`, {
         service_id: getServiceFromInput()?.id
     },
@@ -50,6 +52,7 @@ const addServiceToClinic = async () => {
         }
 
     );
+    loading.value = false;
 
     return res.data;
 
@@ -73,19 +76,21 @@ const getServiceFromInput = () => {
     let service = httpServices.value.find(service => service.title === input.value);
     return service;
 }
-
+const loading = ref(false);
 const RemoveServiceFromClinic = async (item:string)=>{
     let service_id = props.services?.find(service => service.title === item)?.id;
     let clinic_id = props.id;
 
     console.log(service_id, clinic_id);
 
+    loading.value = true;
     const res = await Http.delete(`clinic/removeService/${clinic_id}/${service_id}`,
         {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
 
     );
+    loading.value = false;
 
     if(res.status === 401) window.location.href = '/login';
     else 
@@ -119,7 +124,7 @@ const assignInput = (event: any) => {
         <div class="addToList-wrapper">
             <DropDownInputField ref="listInput" placeHolder="Add To Services" :list="servicesList"
                 @input="assignInput($event)" />
-            <div class="btn add" @click="addToList()">Add</div>
+            <Btn class="add" :loading="loading" @click="addToList()">Add</Btn>
 
         </div>
 

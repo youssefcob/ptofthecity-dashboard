@@ -9,6 +9,7 @@ import EditSchedule from './EditSchedule.vue';
 import EditClinic from './EditClinic.vue';
 import UpdateImageModal from './UpdateImageModal.vue';
 import AddMoment from './AddMoment.vue';
+import Btn from '@/components/sharedComponents/btn.vue';
 
 
 const props = defineProps({
@@ -34,14 +35,21 @@ const toggleDeleteModal = () => {
     showDeleteModal.value = !showDeleteModal.value;
 }
 
+const loading = reactive({
+    deleteClinic: false,
+    deleteMoment: false
+});
+
 const edit = ref(false);
 const emit = defineEmits(['clinicDeleted']);
 const deleteClinic = async (id: number | undefined) => {
     // console.log(id);
     if (!id) return;
+    loading.deleteClinic = true;
     let res = await Http.delete(`clinic/delete/${id}`, {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
+    loading.deleteClinic= false;
     // console.log(res);
     if (res.status === 401) window.location.href = '/login';
     if (res.status === 200) emit('clinicDeleted', id);
@@ -78,9 +86,11 @@ const updateClinic = (clinic: Clinic) => {
 
 const deleteMoment = async (id: number) => {
     try {
+        loading.deleteMoment = true;
         let res = await Http.delete(`clinic/media/${id}`, {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
         });
+        loading.deleteMoment = false;
         console.log(res);
         if (res.status === 200) {
             console.log(res.data);
@@ -92,11 +102,14 @@ const deleteMoment = async (id: number) => {
         }
 
     } catch (error) {
+        loading.deleteMoment = false;
         console.log(error)
     }
     // console.log(form)
 
 }
+
+
 </script>
 
 <template>
@@ -134,7 +147,7 @@ const deleteMoment = async (id: number) => {
                         <span>Are you sure you want to delete?</span>
                         <div>
                             <button class="cancel" @click="toggleDeleteModal()">Cancel</button>
-                            <button class="delete" @click="deleteClinic(clinicState?.id)">Yes</button>
+                            <Btn class="delete" :loading="loading.deleteClinic" @click="deleteClinic(clinicState?.id)">Yes</Btn>
                         </div>
                     </div>
                 </div>
@@ -163,7 +176,7 @@ const deleteMoment = async (id: number) => {
                 <ul>
                     <li v-for="(moment, index) in clinicState?.media" :key="moment.id"><a :href="moment.path">Moment
                             {{ index }}</a>
-                        <div class="btn delete" @click="deleteMoment(moment.id)">delete</div>
+                        <Btn class="delete" :loading="loading.deleteMoment" @click="deleteMoment(moment.id)">delete</Btn>
                     </li>
                 </ul>
                 <!-- {{ clinicState?.media }} -->

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Btn from '@/components/sharedComponents/btn.vue';
 import CheckBox from '@/components/sharedComponents/CheckBox.vue';
 import InputField from '@/components/sharedComponents/InputField.vue';
 import type { Schedule } from '@/interfaces/content';
@@ -16,6 +17,8 @@ const props = defineProps({
         required: true
     }
 });
+
+const loading= ref(false);
 
 let days: Ref<string[]> = ref(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']);
 
@@ -115,7 +118,7 @@ const submit = async () => {
             </div>
         </div>
 
-        <div class="btn" @click="submit()">Submit</div>
+        <Btn class="btn" :loading="loading" @click="submit()">Submit</Btn>
 
     </form>
 

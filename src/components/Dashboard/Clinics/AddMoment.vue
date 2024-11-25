@@ -3,6 +3,9 @@ import FileInputField from '@/components/sharedComponents/FileInputField.vue';
 import Http from '@/mixins/Http';
 import { ref } from 'vue';
 
+// import btn from '@/components/sharedComponents/btn.vue';
+
+import btn from '@/components/sharedComponents/btn.vue';
 const image = ref(new FormData());
 
 const props = defineProps({
@@ -12,6 +15,7 @@ const props = defineProps({
     }
 });
 
+const loading = ref(false);
 const emit = defineEmits(['clinicUpdated']);
 
 const submitImage = async () => {
@@ -27,9 +31,11 @@ const submitImage = async () => {
                 break;
             }
         }
+        loading.value = true;
         let res = await Http.post(`clinic/upload/${props.id}`, formData, {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
         });
+        loading.value = false;
         console.log(res);
         if (res.status === 200) {
             console.log(res.data);
@@ -43,6 +49,8 @@ const submitImage = async () => {
         }
     } catch (error) {
         console.log(error)
+        loading.value = false;
+
     }
     // console.log(form)
 
@@ -53,7 +61,7 @@ const submitImage = async () => {
 <template>
     <div class="wrapper">
         <div class="field"><FileInputField placeHolder="Upload Image" @input="image = $event" /></div>
-        <div class="btn" @click="submitImage()">Submit Image</div>
+        <btn class="btn" @click="submitImage()" :loading="loading">Submit</btn>
     </div>
 </template>
 

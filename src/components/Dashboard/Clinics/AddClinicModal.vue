@@ -4,6 +4,7 @@ import CheckBox from '@/components/sharedComponents/CheckBox.vue';
 
 import { reactive, ref, type Ref } from 'vue';
 import Http from '@/mixins/Http';
+import Btn from '@/components/sharedComponents/btn.vue';
 
 let days: Ref<string[]> = ref(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']);
 const scheduleForm = reactive({
@@ -69,11 +70,14 @@ const cancel = () => {
 
 const emit = defineEmits(['newClinic']);
 
+const loading = ref(false);
 const addClinic = async () => {
     console.log(form)
+    loading.value = true;
     let res = await Http.post(`clinic/create`, form, {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
+    loading.value = false;
     console.log(res);
     if (res.status === 401) window.location.href = '/login';
     // if (res.status === 200) { emit('newClinic', res.data); 
@@ -134,7 +138,7 @@ const addClinic = async () => {
             </div>
         </div>
         <div class="buttons-wrapper">
-            <div class="btn" @click="submit()">Confirm</div>
+            <Btn class="btn" @click="submit()" :loading="loading">Confirm</Btn>
             <div class="btn cancel" @click="cancel()">Cancel</div>
         </div>
     </form>
