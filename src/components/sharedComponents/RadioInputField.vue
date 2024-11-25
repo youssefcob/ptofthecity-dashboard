@@ -51,7 +51,7 @@ const checkIfChecked = (option:string) => {
 
 <template>
     <div class="radio-input-field" >
-        <span class="text" :style="props.error? `color:red;`:``">{{ props.title }}:</span>
+        <span class="text" :style="props.error? `color:red;`:``"  v-if="props.title">{{ props.title }}:</span>
         <div class="options">
             <div class="option" v-for="option in props.options" :key="option">
                 <input type="radio" @change="" :checked="checkIfChecked(option)" :name="props.title" :value="option" />
