@@ -20,13 +20,16 @@ const toggleDeleteModal = () => {
 }
 
 const emit = defineEmits(['serviceDeleted']);
-
+const loading = ref(false);
 const deleteService = async (id: string | undefined) => {
     // console.log(id);
     if (!id) return;
+
+    loading.value = true;  
     let res = await Http.delete(`services/${id}`, {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
+    loading.value = false;
     // console.log(res);
     if (res.status === 401) window.location.href = '/login';
     if (res.status === 200) emit('serviceDeleted', id);

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Btn from '@/components/sharedComponents/btn.vue';
 import FileInputField from '@/components/sharedComponents/FileInputField.vue';
 import Http from '@/mixins/Http';
 import { ref } from 'vue';
@@ -8,7 +9,7 @@ const props = defineProps({
 })
 
 let image = ref(new FormData());
-
+const loading = ref(false);
 const emit = defineEmits(['serviceChanged','cancel']);
 const submit = async () => {
     try{
@@ -23,9 +24,11 @@ const submit = async () => {
             break;
         }
     }
+    loading.value = true;
     let res = await Http.post(`services/updateImage/${props.id}`, formData, {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
+    loading.value = false;
     console.log(res);
     emit('serviceChanged', res.data);
     emit('cancel');
@@ -49,7 +52,7 @@ const submit = async () => {
 <template>
     <div class="changeImage">
         <FileInputField @input="image = $event" placeHolder="Image" />
-        <div class="btn" @click="submit()">Submit</div>
+        <Btn  @click="submit()" :loading="loading">Submit</Btn>
     </div>
 </template>
 

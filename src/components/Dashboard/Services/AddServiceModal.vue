@@ -4,6 +4,7 @@ import InputField from '@/components/sharedComponents/InputField.vue';
 import ServiceListHelper from './ServiceListHelper.vue';
 import { reactive, ref } from 'vue';
 import Http from '@/mixins/Http';
+import Btn from '@/components/sharedComponents/btn.vue';
 
 
 const form: { title: string, description: string, listHeader: string, path: string, list: string[] } = reactive({
@@ -16,6 +17,7 @@ const form: { title: string, description: string, listHeader: string, path: stri
 const emit = defineEmits(['cancel', 'submit']);
 const image = ref(new FormData());
 
+const loading = ref(false);
 const submit = async () => {
     let id = await submitImage();
     let res = await submitService(id);
@@ -41,6 +43,7 @@ const submitImage = async () => {
             break;
         }
     }
+    loading.value = true;
     let res = await Http.post(`services/image`, formData, {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
@@ -48,6 +51,7 @@ const submitImage = async () => {
     // if (res.status === 401) window.location.href = '/login';
     // if (res.status === 200) { emit('newClinic', res.data); 
     if (res.status === 200) {
+        loading.value = false;
         return res.data;
         // window.location.reload();
     } else {
@@ -57,15 +61,18 @@ const submitImage = async () => {
     }
     } catch (error) {
         console.log(error)
+        loading.value = false;
     }
     // console.log(form)
    
 }
 
 const submitService = async (id: string) => {
+    loading.value = true;
     let res = await Http.post(`services/imageData/${id}`, form, {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
+    loading.value = false;
 
     console.log(res);
     // if (res.status === 401) window.location.href = '/login';
@@ -112,7 +119,7 @@ const addToList = (list: string[]) => {
         </div>
 
         <div class="buttons-wrapper">
-            <div class="btn" @click="submit()">Confirm</div>
+            <Btn :loading="loading" @click="submit()">Confirm</Btn>
             <div class="btn cancel" @click="cancel()">Cancel</div>
         </div>
     </form>

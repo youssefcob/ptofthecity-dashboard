@@ -5,6 +5,7 @@ import type { Service } from '@/interfaces/content';
 import { reactive, ref } from 'vue';
 import ServiceListHelper from './ServiceListHelper.vue';
 import Http from '@/mixins/Http';
+import Btn from '@/components/sharedComponents/btn.vue';
 
 
 const props = defineProps({
@@ -24,12 +25,14 @@ const editForm: Service= reactive({
 
 
 const emit = defineEmits(['cancel', 'serviceChanged']);
-
+const loading = ref(false);
 const submit = async () => {
     console.log(editForm);
+    loading.value = true;
     let res = await Http.put(`services/${props.service.id}`, editForm, {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
+    loading.value = false;
     console.log(res);
     emit('serviceChanged', res.data);
     emit('cancel');
@@ -75,7 +78,7 @@ const addToList = (list: string[]) => {
         </div>
 
         <div class="buttons-wrapper">
-            <div class="btn" @click="submit()">Confirm</div>
+            <Btn class="btn" @click="submit()" :loading="loading">Confirm</Btn>
             <div class="btn cancel" @click="cancel()">Cancel</div>
         </div>
     </form>
