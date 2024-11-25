@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Btn from '@/components/sharedComponents/btn.vue';
 import FileInputField from '@/components/sharedComponents/FileInputField.vue';
 import InputField from '@/components/sharedComponents/InputField.vue';
 import Http from '@/mixins/Http';
@@ -26,11 +27,14 @@ const createForm = () => {
     }
     return form;
 }
+const loading = ref(false);
 const submit = async () => {
     let form = createForm();
+    loading.value = true;
     let res = await Http.post(`images/insurance`,form, {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
+    loading.value = false;
 
     console.log(res);
     if (res.status === 401) window.location.href = '/login';
@@ -55,7 +59,7 @@ const submit = async () => {
         </div>
 
         <div class="buttons-wrapper">
-            <div class="btn" @click="submit()">Confirm</div>
+            <Btn class="btn" @click="submit()" :loading="loading">Confirm</Btn>
             <div class="btn cancel" @click="cancel()">Cancel</div>
         </div>
     </form>
