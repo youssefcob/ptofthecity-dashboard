@@ -4,73 +4,66 @@ import FileInputField from '@/components/sharedComponents/FileInputField.vue';
 import Modal from '@/components/sharedComponents/Modal.vue';
 import Http from '@/mixins/Http';
 import { ref, onMounted, type Ref, watch } from 'vue';
+import AddCampaignModal from './AddCampaignModal.vue';
+import Btn from '@/components/sharedComponents/btn.vue';
 
 
+const landingPage = ref<{
+    id: number,
+    title: string,
+    slogans: string[],
+    images: {
+        path: string
+    }[],
+    animation_interval: string,
+    buttonLink: string,
+    buttonText: string,
+    animation: string
+}[]>([]);
 
-const props = defineProps<{
-    content: any
-}>();
-const imagesState = ref(props.content);
-const modal:Ref<InstanceType<typeof Modal> | null> = ref(null);
+const modal: Ref<InstanceType<typeof Modal> | null> = ref(null);
 
-const formImage = ref(new FormData());
+const loading: Ref<boolean> = ref(false);
 
-watch(() => props.content, (newContent) => {
-    imagesState.value = newContent;
-});
+const handleSubmission = (data: any) => {
+    landingPage.value.push(data);
+    modal.value?.closeModal();
+}
 
-const submitImage = async () => {
-    let formData = new FormData();
-    let img = formImage.value as FormData;
-    for (let [key, value] of img.entries()) {
-        console.log(key, value);
-        if (value) {
-            formData.append('image', value);
-            // console.log(value);
-            break;
+const fetchLandingPage = async () => {
+    try {
+        const res = await Http.get('content/campaign', { Authorization: `Bearer ${localStorage.getItem('token')}` });
+        console.log(res.data);
+        landingPage.value = res.data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const deleteCampaign = async (id: number) => {
+    loading.value = true;
+    try {
+        const res = await Http.delete(`content/campaign/${id}`, { Authorization: `Bearer ${localStorage.getItem('token')}` });
+        console.log(res.data);
+        loading.value = false;
+        if (res.status != 200) {
+            console.log(res);
+            return;
         }
-    }
-    let res = await Http.post('content/carousel', formData,{
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-    } );
-
-    if (res.status === 401) window.location.href = '/login';
-    if (res.status === 200) {
-        imagesState.value = res.data.body;
-        modal.value?.closeModal()
-
+        landingPage.value = landingPage.value.filter((campaign) => campaign.id !== id);
+    } catch (error) {
+        loading.value = false;
+        console.log(error);
     }
 }
-
-const deleteImage = async (image:string) => {
-    let res = await Http.delete(`content/carousel`,{
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-    },{
-        imageId : image
-    }
-);
-    console.log(res);
-
-    if (res.status === 401) window.location.href = '/login';
-    if (res.status === 200) {
-        console.log(res.data.body);
-
-        imagesState.value = res.data.body;
-    }
-}
-
 onMounted(() => {
-    // getLandingPageImages();
+    fetchLandingPage();
 });
 </script>
 
 <template>
     <Modal ref="modal">
-        <div class="add-image">
-        <FileInputField @input="formImage = $event" placeHolder="Image"/>
-        <button class="btn add" @click="submitImage()">submit</button>
-        <button class="btn add" @click="modal?.closeModal()">Cancel</button>
-    </div>
+        <AddCampaignModal ref="modal" @close="modal?.closeModal()" @submit="handleSubmission($event)" />
 
     </Modal>
     <div class="landing-page">
@@ -81,32 +74,40 @@ onMounted(() => {
             </div>
         </div>
 
-        <div class="card">
-            <ul>
-                <li v-for="(image,index) in imagesState" :key="index">
-                   <a :href="image" target="_blank"> Image {{ index + 1 }} </a>
-                   <div class="btn delete" @click="deleteImage(image)">Delete</div>
-                </li>
-            </ul>
+        <div class="card" v-for="(campaign, index) in landingPage" :key="index">
+            <!-- {{campaign}} -->
+            <div class="card-header">
+                <h2>Title: {{ campaign.title }}</h2>
+                <Btn class="delete" @click="deleteCampaign(campaign.id)" :loading="loading">Delete</Btn>
+            </div>
+
+            <div class="slogans">
+                <h3>Slogans: </h3><span> [<template v-for="(slogan, index) in campaign.slogans" :key="index">{{ slogan }},
+                    </template>]</span>
+            </div>
+
+            <h3>Animation: {{ campaign.animation }}</h3>
+
+            <h3>Interval: {{ campaign.animation_interval }}</h3>
+            <h3>Button Link: {{ campaign.buttonLink }}</h3>
+            <h3>Button Text: {{ campaign.buttonText }}</h3>
+            <h3>Images: </h3>
+            <div class="images">
+                <a v-for="(image, index) in campaign.images" :key="index" :href="image.path">Image {{ index }}<br></a>
+            </div>
+
+            <!-- {{ landingPage }} -->
         </div>
     </div>
 </template>
 
 <style scoped lang="scss">
-.add-image{
-    background-color: $darkgrey;
-    width:20rem;
-    padding:3rem;
-    display:flex;
-    flex-direction: column;
-    gap:2rem;
-}
 .landing-page {
     .header {
         display: flex;
 
         justify-content: space-between;
-        
+
 
     }
 
@@ -115,32 +116,37 @@ onMounted(() => {
         width: 100%;
         background-color: $darkgrey;
         border-radius: 10px;
-        padding:2rem;
-        ul{
-            list-style:circle;
-            list-style-position: inside;
-            li{
-                text-decoration: none;
-                border-bottom:1px solid black;
-                padding-top: 0.5rem;
-                padding-bottom: 0.5rem;
-                display:flex;
-                justify-content:space-between;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
 
-                .btn{
-                    height:1rem;
-                }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .slogans {
+            display: flex;
 
-                a{
-                    display:block;
-                    color:black;
-                    text-decoration: underline;
-                    &:hover{
-                        color:blue;
-                    }
-                }
+            // flex-direction: column;
+            // flex-wrap: wrap;
+            // gap: 0.2rem;
+            span {
+                font-size: 1.5rem;
+            }
+
+            // text-align: center;
+        }
+
+        .images {
+            a {
+                font-size: 1.5rem;
+                color: blue;
+                text-decoration: underline;
             }
         }
+
     }
 }
 </style>

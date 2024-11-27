@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import Http from '@/mixins/Http';
-import { reactive, ref, type Ref } from 'vue';
+import { onMounted, reactive, ref, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
+import Btn from '../sharedComponents/btn.vue';
 // const password:Ref<HTMLInputElement | null> = ref(null);
 const show = ref(true);
 const loginform = reactive({
@@ -19,12 +20,16 @@ const checkIfLoggedIn = () => {
     }
 }
 
+const Loading = ref(false);
+
 const login = async () => {
     console.log(loginform);
     try {
+        Loading.value = true;
         let res = await Http.post('admin/login', loginform);
         // console.log(res);
         // console.log("________________________");
+        Loading.value = false;
         
         if (res.status === 200) {
             localStorage.setItem('user', JSON.stringify(res.data.user));
@@ -33,6 +38,8 @@ const login = async () => {
 
         } else {
             error.value.push(res.data.message);
+            alert(res.data.message);
+            console.error(res.data.message);
             setTimeout(() => {
                 error.value = [];
             }, 3000);
@@ -40,13 +47,19 @@ const login = async () => {
 
         // Redirect to /dashboard
     } catch (e: any) {
-        console.log(e);
+        Loading.value = false;
+        console.error(e);
         error.value.push(e);
+        alert(e);
         setTimeout(() => {
             error.value = [];
         }, 3000);
     }
 }
+
+// onMounted(() => {
+//     checkIfLoggedIn();
+// })
 
 </script>
 
@@ -67,7 +80,7 @@ const login = async () => {
 
             </div>
 
-            <div class="login-btn" @click="login">Login</div>
+            <Btn class="login-btn" @click="login" :loading="Loading">Login</Btn>
         </form>
     </div>
 </template>

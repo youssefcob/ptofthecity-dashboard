@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import Btn from '@/components/sharedComponents/btn.vue';
 import InputField from '@/components/sharedComponents/InputField.vue';
 import type { Clinic } from '@/interfaces/content';
 import Http from '@/mixins/Http';
-import { reactive, TrackOpTypes } from 'vue';
+import { reactive, ref, TrackOpTypes } from 'vue';
 
 
 const props = defineProps({
@@ -31,14 +32,18 @@ const closeModal = () => {
     emit('close');
 }
 
+
+const loading = ref(false);
 const submit = async () => {
     // try{
     console.log('submit')
+
+    loading.value = true;
         const res = await Http.put(`clinic/update/${props.clinic.id}`,form,{
             'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-            
-        )
+        });
+    loading.value = false;
+
         console.log(res)
 
         if(res.status === 200) emit('clinicUpdated',res.data);
@@ -111,7 +116,7 @@ const submit = async () => {
             </div>
             <div class="btn-wrapper">
                 <div class="btn cancel" @click="closeModal()">Cancel</div>
-                <div class="btn" @click="submit()">Submit</div>
+                <Btn  @click="submit()" :loading="loading">Submit</Btn>
             </div>
 
         </div>

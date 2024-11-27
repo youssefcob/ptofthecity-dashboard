@@ -1,39 +1,39 @@
 <script setup lang="ts">
-import Http from '@/mixins/Http';
+// import Http from '@/mixins/Http';
 import ContentHeader from './ContentHeader.vue';
 import LandingPageCarousel from './ContentSections/LandingPageCarousel.vue';
-import WhoWeAre from './ContentSections/WhoWeAre.vue';
-import { onMounted, reactive, ref, type Ref } from "vue";
+// import WhoWeAre from './ContentSections/WhoWeAre.vue';
+// import { onMounted, reactive, ref, type Ref } from "vue";
 
-type Content = {
-    title: string,
-    body: any
-}
+// type Content = {
+//     title: string,
+//     body: any
+// }
 
-let content:Content[] = reactive([]);
+// let content:Content[] = reactive([]);
 
 
-const getContent = async () => {
-    let data = await Http.get('content')
-    console.log(data.data)
-    content = data.data;
-}
-let carousel:Ref<string[]> = ref([]);
-let whoWeAre:Ref<any> = ref([]);
-const filterContent = (title:string):any => {
-    const result = content.filter((item: any) => item.title === title)[0];
-    console.log(result);
-    return result.body;
-    // console.log(carousel.value);
-}
-onMounted(async() => {
-    await getContent();
-    carousel.value = filterContent("Carousel");
-    console.log(carousel.value);
-    whoWeAre.value = filterContent("Who We Are");
-    console.log(whoWeAre.value);
+// const getContent = async () => {
+//     let data = await Http.get('content')
+//     console.log(data.data)
+//     content = data.data;
+// }
+// let carousel:Ref<string[]> = ref([]);
+// let whoWeAre:Ref<any> = ref([]);
+// const filterContent = (title:string):any => {
+//     const result = content.filter((item: any) => item.title === title)[0];
+//     console.log(result);
+//     return result.body;
+//     // console.log(carousel.value);
+// }
+// onMounted(async() => {
+//     await getContent();
+//     carousel.value = filterContent("Carousel");
+//     console.log(carousel.value);
+//     whoWeAre.value = filterContent("Who We Are");
+//     console.log(whoWeAre.value);
 
-})
+// })
 </script>
 <template>
     <div class="content">
@@ -41,11 +41,11 @@ onMounted(async() => {
         <div class="content-wrapper">
 
             <div class="section">
-                <LandingPageCarousel  :content="carousel" />
+                <LandingPageCarousel   />
             </div>
-            <div class="section">
+            <!-- <div class="section">
                 <WhoWeAre :content="whoWeAre"/>
-            </div>
+            </div> -->
 
         </div>
     </div>
