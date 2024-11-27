@@ -21,13 +21,13 @@ const landingPage = ref<{
     animation: string
 }[]>([]);
 
-const modal: Ref<InstanceType<typeof Modal> | null> = ref(null);
+const campaignModal: Ref<InstanceType<typeof Modal> | null> = ref(null);
 
 const loading: Ref<boolean> = ref(false);
 
 const handleSubmission = (data: any) => {
     landingPage.value.push(data);
-    modal.value?.closeModal();
+    campaignModal.value?.closeModal();
 }
 
 const fetchLandingPage = async () => {
@@ -56,21 +56,25 @@ const deleteCampaign = async (id: number) => {
         console.log(error);
     }
 }
+const openModal = () => {
+    campaignModal.value?.openModal()
+}
+
 onMounted(() => {
     fetchLandingPage();
 });
 </script>
 
 <template>
-    <Modal ref="modal">
-        <AddCampaignModal ref="modal" @close="modal?.closeModal()" @submit="handleSubmission($event)" />
+    <Modal ref="campaignModal">
+        <AddCampaignModal  @close="campaignModal?.closeModal()" @submit="handleSubmission($event)" />
 
     </Modal>
     <div class="landing-page">
         <div class="header">
             <h2>Landing Page</h2>
             <div class="btn-wrapper">
-                <button class="btn add" @click="modal?.openModal()">Add Image</button>
+                <button class="btn add" @click="openModal()">Add Image</button>
             </div>
         </div>
 
