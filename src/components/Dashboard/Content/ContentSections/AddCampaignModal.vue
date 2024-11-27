@@ -39,7 +39,7 @@ const submitForm = async () => {
         loading.value = false;
         if (res.status != 200) {
             if (res.status === 422) {
-                alert('Please fill all fields');
+                alert(res.data.message);
             }
             if (res.status === 401) {
                 alert('Unauthorized');
