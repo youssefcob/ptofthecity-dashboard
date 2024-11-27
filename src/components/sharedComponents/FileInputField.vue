@@ -36,8 +36,8 @@ const HandleFileUpload = (e: Event) => {
    if (files && files.length > 0) {
         const formData = new FormData();
         let file = files[0].name;
-        formData.append('file', files[0]); 
         if (file) {
+        formData.append(file.split('\\').pop() as string, files[0]); 
         fileName.value = file.split('\\').pop() as string;
     }
         emit('input',formData);
@@ -45,6 +45,14 @@ const HandleFileUpload = (e: Event) => {
     }
 
 }
+
+const clear = () => {
+    fileName.value = props.placeHolder || '';
+}
+
+defineExpose({
+    clear
+})
 </script>
 
 
