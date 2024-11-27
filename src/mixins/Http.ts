@@ -45,6 +45,23 @@ const Http = {
 
             }
         },
+        async patch(url: string, data: any, headers: any = {}) {
+            url = Http.url + url;
+
+            try {
+                const response = await axios.patch(url, data, { headers });
+                return response;
+            } catch (error: any) {
+                console.error(error.response);
+
+                if (error.response.status === 401) {
+                    // alert('Unauthorized');
+                    // window.location.href = '/login';
+                }
+                throw error.response;
+
+            }
+        },
         async delete(url: string, headers: any = {}, body: any = {}) {
             url = Http.url + url;
 
