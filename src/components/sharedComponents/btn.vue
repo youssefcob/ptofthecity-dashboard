@@ -44,6 +44,18 @@ const emit = defineEmits(['click']);
   overflow: hidden;
 
 
+  &.login-btn {
+            width: 40%;
+            padding: 1rem;
+            border-radius: 5px;
+            border: none;
+            background-color: $blue;
+            font-size: 1.2rem;
+            color: $white;
+            text-align: center;
+            cursor: pointer;
+            align-self: flex-end;
+        }
 
   &.delete {
       background-color: red;
