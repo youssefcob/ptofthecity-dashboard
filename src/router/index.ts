@@ -83,6 +83,10 @@ const router = createRouter({
             {
               path: 'landingPage',
               component: () => import('@/components/Dashboard/Content/ContentSections/Campaigns/LandingPageCarousel.vue')
+            },
+            {
+              path: 'trusted',
+              component: () => import('@/components/Dashboard/Content/ContentSections/TrustedBies/TrustedBy.vue')
             }
            
           ]

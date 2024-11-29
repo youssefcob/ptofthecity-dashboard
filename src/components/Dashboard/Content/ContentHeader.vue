@@ -31,6 +31,10 @@ onMounted(() => {
                 landing Page
             </router-link>
 
+            <router-link to="/dashboard/content/trusted" class="btn nav-btn" :class="{ active: activeButton === 'trusted' }" @click="handleClick('trusted')">
+                Trusted By
+            </router-link>
+
         </div>
     </div>
 
