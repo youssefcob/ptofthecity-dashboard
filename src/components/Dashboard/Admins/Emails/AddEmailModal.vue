@@ -44,7 +44,6 @@ const submit = async () => {
 }
 const assignEmail = (e: any) => {
     email.value = e;
-    console.log(email.value);
 }
 </script>
 

@@ -70,12 +70,28 @@ const router = createRouter({
         },
         {
           path: 'content',
-          component: () => import('@/components/Dashboard/Content/Content.vue')
+          component: () => import('@/components/Dashboard/Content/Content.vue'),
+          children: [
+            {
+              path: '',
+              redirect: 'content/landingPage'
+            },
+            {
+              path: 'staff',
+              component: () => import('@/components/Dashboard/Content/ContentSections/Staff/Staff.vue')
+            },
+            {
+              path: 'landingPage',
+              component: () => import('@/components/Dashboard/Content/ContentSections/Campaigns/LandingPageCarousel.vue')
+            }
+           
+          ]
         },
         {
           path:'admin/emails',
           component:() => import('@/components/Dashboard/Admins/Emails/Emails.vue')
-        }
+        },
+        
       ]
     }
     

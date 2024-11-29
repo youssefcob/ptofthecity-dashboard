@@ -33,6 +33,7 @@ const login = async () => {
         
         if (res.status === 200) {
             localStorage.setItem('user', JSON.stringify(res.data.user));
+            console.log(res.data);
             localStorage.setItem('token', res.data.tokens.token);
             router.push('/dashboard');
 

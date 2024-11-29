@@ -58,6 +58,7 @@ const SuperAdmin = () => {
             <router-link to="/dashboard/content" class="nav-btn" :class="{ active: activeButton === 'content' }" @click="handleClick('content')">
                 Content
             </router-link>
+       
     
 
         </div>
