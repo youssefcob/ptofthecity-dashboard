@@ -113,6 +113,7 @@ const deleteItem = async (item: string, event: any) => {
 }
 
 const assignInput = (event: any) => {
+    console.log(event);
     input.value = event;
     // event.stopPropagation();
 }

@@ -74,7 +74,7 @@ const router = createRouter({
           children: [
             {
               path: '',
-              redirect: 'content/landingPage'
+              redirect: 'dashboard/content/landingPage'
             },
             {
               path: 'staff',
@@ -87,6 +87,10 @@ const router = createRouter({
             {
               path: 'trusted',
               component: () => import('@/components/Dashboard/Content/ContentSections/TrustedBies/TrustedBy.vue')
+            },
+            {
+              path: 'images',
+              component: () => import('@/components/Dashboard/Content/ContentSections/Images/Images.vue') 
             }
            
           ]

@@ -11,7 +11,7 @@ type TrustedBy = {
 }
 const trustedBies: Ref<TrustedBy[]> = ref([])
 
-const loading= ref(false);
+const loading = ref(false);
 
 const getTrustedBies = async () => {
     const res = await Http.get('trustedBy');
@@ -20,19 +20,19 @@ const getTrustedBies = async () => {
 
 }
 
-const handleSubmission = (e:TrustedBy) => {
+const handleSubmission = (e: TrustedBy) => {
     trustedBies.value.push(e);
 
 }
 
-const deleteTrustedBy = async (id:number) => {
+const deleteTrustedBy = async (id: number) => {
     loading.value = true;
     const res = await Http.delete(`trustedBy/${id}`, { Authorization: `Bearer ${localStorage.getItem('token')}` });
     loading.value = false;
     if (res.status == 200) {
         trustedBies.value = trustedBies.value.filter((t) => t.id !== id);
         return;
-    }else {
+    } else {
         console.error(res);
         alert(res);
     }
@@ -51,12 +51,12 @@ onMounted(() => {
 
             <div class="trustedBy-card" v-for="t in trustedBies">
                 <div class="left">
-                <p><strong>Name:</strong> {{ t.name }}</p>
-                <p><strong>Image:</strong> <a :href="t.path">Click Here!</a></p>
-            </div>
-            <div class="right">
-                <Btn :loading="loading" class="delete" @click="deleteTrustedBy(t.id)">Delete</Btn>
-            </div>
+                    <p><strong>Name:</strong> {{ t.name }}</p>
+                    <p><strong>Image:</strong> <a :href="t.path">Click Here!</a></p>
+                </div>
+                <div class="right">
+                    <Btn :loading="loading" class="delete" @click="deleteTrustedBy(t.id)">Delete</Btn>
+                </div>
             </div>
         </div>
     </div>
@@ -75,20 +75,20 @@ onMounted(() => {
             padding: 1rem;
             background-color: $darkgrey;
             border-radius: 10px;
-            display:flex;
+            display: flex;
             justify-content: space-between;
 
 
-            p{
+            p {
                 font-size: 1.5rem;
 
-                a{
-                    color:blue;
+                a {
+                    color: blue;
                     text-decoration: underline;
                 }
             }
 
-            
+
 
         }
     }

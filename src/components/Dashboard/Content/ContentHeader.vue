@@ -35,6 +35,10 @@ onMounted(() => {
                 Trusted By
             </router-link>
 
+            <router-link to="/dashboard/content/images" class="btn nav-btn" :class="{ active: activeButton === 'images' }" @click="handleClick('images')">
+                Images
+            </router-link>
+
         </div>
     </div>
 
