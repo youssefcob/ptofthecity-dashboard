@@ -17,7 +17,6 @@ let form = new FormData();
 
 const emit = defineEmits(['newImage']);
 
-// console.log(localStorage.getItem('token'));
 const handleImageInput = (e: FormData) => {
     let frm = new FormData();
     form = e as FormData;
@@ -36,13 +35,12 @@ const handleImageInput = (e: FormData) => {
 
 const submit = async () => {
     loading.value = true;
-    console.log(form);
 
     const res = await Http.post(`content/images`, form, {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
     loading.value = false;
-    if (res.status === 200) {
+    if (res.status === 200 || res.status === 201) {
         console.log(res.data);
         emit('newImage', res.data);
     } else {
@@ -60,7 +58,11 @@ defineExpose({
 
     <div class="wrapper">
         <h1>{{ type.charAt(0).toUpperCase() + type.slice(1) }}</h1>
-        <FileInputField placeHolder="Image" @input="handleImageInput($event)" />
+        <div>
+            <FileInputField placeHolder="Image" @input="handleImageInput($event)" />
+            <div class="ps" v-if="type == 'career'"> landscape aspect ratio of 2:3 / 3:4</div>
+        </div>
+
         <Btn class="Add" :loading="loading" @click="submit()">Add Image</Btn>
     </div>
 

@@ -1,24 +1,24 @@
 <script setup lang="ts">
 import Modal from '@/components/sharedComponents/Modal.vue';
-import Careers from './sections/Careers.vue';
+import Img from './sections/ImgComponent.vue';
 
 import Http from '@/mixins/Http';
 import { onMounted, ref, type Ref } from 'vue';
 import ImgFormModal from './ImgFormModal.vue';
 
-type Body = {
-career:string,
-}
+
 
 type Image = {
     title: string,
-    body: Body
+    path: string
 }
+
+// const contentImages = ['career']
+
 const images: Ref<Image[]> = ref([]);
 
 const getImages = async () => {
     const res = await Http.get('content/images');
-    console.log(res)
     images.value = res.data;
 }
 
@@ -33,8 +33,10 @@ const openModal = (type: string) => {
 }
 
 const handleNewImage = (e: any) => {
-    images.value = (e);
-    console.log(e);
+    const index = images.value.findIndex(image => image.title === e.title);
+    if (index !== -1) {
+        images.value[index] = e;
+    }
 }
 
 onMounted(() => {
@@ -49,6 +51,8 @@ onMounted(() => {
     </Modal>
     <!-- {{ images }} -->
     <div class="sections-wrapper">
-        <Careers :images="images" @openModal="openModal('career')" />
+        <Img 
+        v-for="image in images"
+        :image="image" @openModal="openModal($event)" />
     </div>
 </template>

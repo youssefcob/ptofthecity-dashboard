@@ -48,8 +48,6 @@ const submitImage = async () => {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
     console.log(res);
-    // if (res.status === 401) window.location.href = '/login';
-    // if (res.status === 200) { emit('newClinic', res.data); 
     if (res.status === 200) {
         loading.value = false;
         return res.data;
@@ -57,7 +55,7 @@ const submitImage = async () => {
     } else {
     console.log(res);
 
-        alert(res);
+        alert(res.message);
     }
     } catch (error) {
         console.log(error)
@@ -75,15 +73,12 @@ const submitService = async (id: string) => {
     loading.value = false;
 
     console.log(res);
-    // if (res.status === 401) window.location.href = '/login';
-    // if (res.status === 200) { emit('newClinic', res.data); 
     if (res.status === 200) {
         return res;
-        // window.location.reload();
     } else {
     console.log(res);
 
-        alert(res);
+        alert(res.message);
     }
 }
 const cancel = () => {
@@ -107,11 +102,14 @@ const addToList = (list: string[]) => {
                 <InputField required class="field" placeHolder="Service Title" id="serviceTitle"
                     @input="form.title = $event" />
 
-                <InputField height="18.5rem" required class="field" placeHolder="Description" id="description"
+                <InputField height="21.3rem" required class="field" placeHolder="Description" id="description"
                     @input="form.description = $event" />
             </div>
             <div>
                 <FileInputField @input="image = $event" placeHolder="Image" />
+
+                <div class="ps">LandScape Image aspect ratio of 2:3 or 3:4,
+                    also used vertically, point of focus in the middle.</div>
 
                 <InputField class="field" placeHolder="List Header" id="listHeader" @input="form.listHeader = $event" />
                 <ServiceListHelper @input="addToList($event)" />

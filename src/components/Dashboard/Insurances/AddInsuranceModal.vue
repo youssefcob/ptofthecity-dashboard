@@ -55,7 +55,10 @@ const submit = async () => {
 
         <div class="form-wrapper">
             <InputField placeHolder="title" @input="title = $event" />
+            <div>
             <FileInputField placeHolder="image" @input="image = $event" />
+            <div class="ps">Transparent logo in .png format</div>
+        </div>
         </div>
 
         <div class="buttons-wrapper">

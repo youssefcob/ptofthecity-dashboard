@@ -49,8 +49,8 @@ const submit= async ()=>{
     <InputField placeHolder="User Name" @input="form.phone = $event" />
     <RadioInputField class="radio-field" title="Role" :options="roleOptions" @change="assignRole($event)" :checked="'Admin'" :error="false" />
 
-    <InputField placeHolder="Password" @input="form.password = $event" />
-    <InputField placeHolder="Confirm Password" @input="form.password_confirmation = $event" />
+    <InputField placeHolder="Password" @input="form.password = $event" Password />
+    <InputField placeHolder="Confirm Password" @input="form.password_confirmation = $event" Password />
     <button class="btn" @click="submit">Submit</button>
 </div>
 </template>

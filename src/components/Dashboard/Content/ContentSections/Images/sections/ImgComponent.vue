@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import Btn from '@/components/sharedComponents/btn.vue';
-
 const emit = defineEmits(['openModal']);
 
 const props = defineProps<{
-    images: any[]
+    // title:string,
+    image: {
+        title: string,
+        path: string
+    }
 }>();
+
 </script>
 
 <template>
@@ -13,11 +17,11 @@ const props = defineProps<{
 
 
         <div class="header">
-            <h2>Career Image</h2>
-            <Btn class="Add" @click="emit('openModal','careers')">Add Image</Btn>
+            <h2>{{ image.title.charAt(0).toUpperCase() + image.title.slice(1) }} Image</h2>
+            <Btn class="Add" @click="emit('openModal', image.title)">Add Image</Btn>
         </div>
         <div class="body">
-            <div class="card" v-for="image in images">{{ image }}</div>
+            <img :src="image.path">
         </div>
 
     </div>
@@ -33,7 +37,15 @@ const props = defineProps<{
         display: flex;
         justify-content: space-between;
         align-items: center;
+        margin-bottom: 1rem;
 
+    }
+
+    .body{
+        img{
+            width:20rem;
+            height:auto;
+        }
     }
 }
 </style>

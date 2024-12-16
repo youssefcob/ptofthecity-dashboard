@@ -16,7 +16,8 @@ const props = defineProps({
     maxYear:String,
     lettersOnly:Boolean,
     numbersOnly:Boolean,
-    value: String
+    value: String,
+    Password:Boolean
 });
 
 const clear = () => {
@@ -106,8 +107,8 @@ defineExpose({
 <template>
     <div class="required">
         <input  :disabled="$props.disabled" class="input-field" v-if="!props.height" :style="`width:100%; ${CalcHeight()};${($props.error)?'border-color:red':''}`" 
-        v-maska="mask"
-            type="text" v-model="input" @input="handleInput($event)">
+        v-maska="mask" :type="props.Password ? 'password' : 'text'"
+             v-model="input" @input="handleInput($event)">
         <textarea :disabled="$props.disabled" class="input-field" v-if="$props.height" :style="`width:100%;resize:none; ${CalcHeight()};${($props.error)?'border-color:red':''}`"
             floatlabeltype type="text" v-model="input" @input="handleInput($event)" />
         <label class="asterisk" v-if="!input" :style="`${CalcTop()};`">{{ $props.placeHolder }}<span style="color:red" v-if="props.required">

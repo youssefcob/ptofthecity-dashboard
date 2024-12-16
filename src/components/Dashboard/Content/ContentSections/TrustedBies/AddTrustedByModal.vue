@@ -43,7 +43,10 @@ const modifyForm = () => {
 <template>
     <div class="form-container">
         <InputField placeHolder="Name" @input="form.name = $event" />
+        <div>
         <FileInputField @input="form.path = $event" placeHolder="Image"/>
+            <div class="ps">transparent logo in .png format</div>
+    </div>
         <Btn @click="submit" :loading="loading">Submit</Btn>
         <Btn class="cancel" @click="emit('close')">Cancel</Btn>
     </div>

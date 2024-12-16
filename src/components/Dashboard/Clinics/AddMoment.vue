@@ -61,6 +61,7 @@ const submitImage = async () => {
 <template>
     <div class="wrapper">
         <div class="field"><FileInputField placeHolder="Upload Image" @input="image = $event" /></div>
+        <div class="ps">LandScape Image aspect ratio of 2:3 or 3:4</div>
         <btn class="btn" @click="submitImage()" :loading="loading">Submit</btn>
     </div>
 </template>

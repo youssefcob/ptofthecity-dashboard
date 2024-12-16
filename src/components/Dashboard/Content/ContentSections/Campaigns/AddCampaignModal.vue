@@ -99,7 +99,10 @@ const modifyImages = (images: FormData) => {
             </div>
         </div>
         <div class="right">
+            <div>
             <MultiFileInputField @input="modifyImages($event)" />
+            <div class="ps">landscape aspect ratio 2:3 / 3:4 </div>
+        </div>
             <ListInput placeHolder="Add Slogans" @input=" form.slogans = $event" />
         </div>
 
@@ -120,12 +123,12 @@ const modifyImages = (images: FormData) => {
     .left {
         display: flex;
         flex-direction: column;
-        gap: 1.8rem;
+        gap: 2.24rem;
 
         .btn-wrapper {
             display: flex;
             flex-direction: column;
-            gap: 1.8rem;
+            gap: 2.24rem;
         }
     }
 
