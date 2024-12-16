@@ -29,10 +29,18 @@ let id = makeid(5);
 const input: Ref<string> = ref('');
 const show: Ref<boolean> = ref(false);
 
-const showDropDown = () => {
+    const showDropDown = () => {
     filteredList.value = props.list;
     show.value = true;
 }
+
+const hideDropDown = () => {
+    setTimeout(() => {
+        show.value = false;
+    }, 200);
+}
+
+
 const emit = defineEmits([`input`]);
 
 const changeInput = (insurance: string) => {
@@ -45,6 +53,7 @@ const changeInput = (insurance: string) => {
 
 
 const filterList = () => {
+    showDropDown();
     if (props.list) {
         filteredList.value = props.list.filter(listItem => listItem.toLowerCase().startsWith(input.value.toLowerCase()));
     }
@@ -96,7 +105,7 @@ defineExpose({
     <div :class="`drpdown-btn ${id}`" @click="showDropDown">
 
         <div class="required">
-            <input  :disabled="props.disabled" ref="inputField" class="input-field " @input="filterList()"
+            <input  :disabled="props.disabled" ref="inputField" class="input-field " @input="filterList()" @focus="showDropDown"  @focusout="hideDropDown"
                 v-model="input" :style="`width:100%;$;${($props.error) ? 'border-color:red' : ''}`" type="text">
 
 
