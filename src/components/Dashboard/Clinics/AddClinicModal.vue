@@ -58,6 +58,8 @@ const form = reactive({
     summary: '',
     schedule: {}
 })
+const emit = defineEmits(['newClinic', 'close']);
+
 
 const submit = () => {
     form.schedule = scheduleForm;
@@ -65,10 +67,9 @@ const submit = () => {
 }
 
 const cancel = () => {
-    console.log('cancel');
+    emit('close');
 }
 
-const emit = defineEmits(['newClinic']);
 
 const loading = ref(false);
 const addClinic = async () => {
@@ -81,9 +82,9 @@ const addClinic = async () => {
     console.log(res);
     if (res.status === 401) window.location.href = '/login';
     // if (res.status === 200) { emit('newClinic', res.data); 
-    if (res.status === 200) { 
+    if (res.status === 200) {
         window.location.reload();
-    }else{
+    } else {
         alert(res.data.error);
     }
     // window.location.reload();
@@ -119,7 +120,7 @@ const addClinic = async () => {
 
 
                 </div>
-                <InputField required class="field" placeHolder="Description" height="5rem" id="summary"
+                <InputField required class="field" placeHolder="Description" height="13rem" id="summary"
                     @input="form.summary = $event" />
             </div>
             <div class="schedule">
@@ -148,12 +149,17 @@ const addClinic = async () => {
 
     // width:80%;
     // height:80%;
-    
+
     background-color: $grey;
     padding: 2rem;
-    .schedule {}
 
- 
+    .schedule {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+
 
     .day {
         display: grid;
@@ -170,6 +176,7 @@ const addClinic = async () => {
         //     width:5rem;
         // }
     }
+
     .grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -197,7 +204,15 @@ const addClinic = async () => {
         .info {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 2rem;
+
+            .grid {
+                margin-top: 2rem;
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                column-gap: 1rem;
+                row-gap: 2rem;
+            }
         }
     }
 }

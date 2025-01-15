@@ -2,9 +2,18 @@ import axios from "axios";
 
 
 const Http = {
-    url: (window.location.hostname === 'localhost')?
-      import.meta.env.VITE_API_URL 
-    : import.meta.env.VITE_API_PRODUCTION_URL,
+    url: (() => {
+        switch (import.meta.env.VITE_ENV) {
+            case 'development':
+                return import.meta.env.VITE_API_URL;
+            case 'staging':
+                return import.meta.env.VITE_API_STAGING_URL;
+            case 'production':
+                return import.meta.env.VITE_API_PRODUCTION_URL;
+            default:
+                throw new Error('Unknown environment');
+        }
+    })(),
     methods: {
         async get(url: string, headers: any = {}) {
             url = Http.url + url;

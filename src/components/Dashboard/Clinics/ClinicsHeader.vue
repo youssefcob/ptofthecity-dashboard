@@ -12,7 +12,7 @@ const modal:Ref<InstanceType<typeof Modal> | null> = ref(null);
 
 <template>
             <Modal ref="modal" >
-                <AddClinicModal />
+                <AddClinicModal @close="modal?.closeModal()" />
             </Modal>
 
     <div class="header">
