@@ -19,51 +19,50 @@ const image = ref(new FormData());
 
 const loading = ref(false);
 const submit = async () => {
-    let id = await submitImage();
-    let res = await submitService(id);
-
-    console.log(res.data);
-    if (res.status === 200) {
-        window.location.reload();
-    }
-
-
-}
-
-const submitImage = async () => {
-    try{
+    try {
+        loading.value = true;
         let formData = new FormData();
-    // img.append('image', image);
-    let img = image.value as FormData;
-    for (let [key, value] of img.entries()) {
-        console.log(key, value);
-        if (value) {
-            formData.append('image', value);
-            // console.log(value);
-            break;
-        }
-    }
-    loading.value = true;
-    let res = await Http.post(`services/image`, formData, {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-    });
-    console.log(res);
-    if (res.status === 200) {
-        loading.value = false;
-        return res.data;
-        // window.location.reload();
-    } else {
-    console.log(res);
+        formData.append('title', form.title);
+        formData.append('description', form.description);
+        formData.append('listHeader', form.listHeader);
+        formData.append('list[]', JSON.stringify(form.list));
+        // img.append('image', image);
+        let img = image.value as FormData;
+        for (let [key, value] of img.entries()) {
+            console.log(key, value);
+            if (value) {
+                formData.append('image', value);
 
-        alert(res.message);
-    }
+
+                // console.log(value);
+                break;
+            }
+        }
+        loading.value = true;
+        let res = await Http.post(`services`, formData, {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        });
+        console.log(res);
+        if (res.status === 200 || res.status === 201) {
+            loading.value = false;
+            // return res.data;
+            window.location.reload();
+        } else {
+            console.log(res);
+
+            alert(res.data.message);
+        }
     } catch (error) {
         console.log(error)
         loading.value = false;
     }
     // console.log(form)
-   
+
+
+
+
 }
+
 
 const submitService = async (id: string) => {
     loading.value = true;
@@ -76,7 +75,7 @@ const submitService = async (id: string) => {
     if (res.status === 200) {
         return res;
     } else {
-    console.log(res);
+        console.log(res);
 
         alert(res.message);
     }

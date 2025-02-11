@@ -91,7 +91,11 @@ const router = createRouter({
             {
               path: 'images',
               component: () => import('@/components/Dashboard/Content/ContentSections/Images/Images.vue') 
-            }
+            },
+            {
+              path: 'whoWeAre',
+              component: () => import('@/components/Dashboard/Content/ContentSections/WhoWeAre/WhoWeAre.vue')
+            },
            
           ]
         },

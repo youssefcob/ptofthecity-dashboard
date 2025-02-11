@@ -13,24 +13,17 @@ const currentPage: Ref<number> = ref(1);
 
 const lastPage: Ref<number> = ref(0);
 
-    const eligibilityList: Ref<Eligibility[]> = ref([]);
+const eligibilityList: Ref<Eligibility[]> = ref([]);
 
-const handleStatusChange = (s: string) => {
-    status.value = s;
-    debouncedGetEligibility();
+
+const changeElig = (query: string) => {
+    debouncedGetEligibility(query);
+    // currentPage.value = 1;
+
 }
 
-const paginate = (page: number) => {
-    if (currentPage.value == 1 && page < 0) return;
-    if (currentPage.value == lastPage.value && page > 0) return;
-    currentPage.value = currentPage.value + page;
-
-    debouncedGetEligibility();
-}
-
-
-const getEligibility = async () => {
-    const res = await Http.get(`insurance/status/${status.value}?page=${currentPage.value}`, {
+const getEligibility = async (query: string = '') => {
+    const res = await Http.get(`insurance/filter?${query}`, {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
     eligibilityList.value = res.data.data;
@@ -50,6 +43,34 @@ const getEligibility = async () => {
     }
 
 }
+const downloading: Ref<boolean> = ref(false);
+
+const exportEligibility = async (query: string = '') => {
+    try {
+        downloading.value = true;
+        const res = await Http.get(`insurance/filter/export?${query}`, {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        });
+        downloading.value = false;
+        if (res.status === 200) {
+            const url = window.URL.createObjectURL(new Blob([res.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            const currentDate = new Date().toISOString().split('T')[0];
+            link.setAttribute('download', `insurances_${currentDate}.csv`);
+            document.body.appendChild(link);
+            link.click();
+        } else {
+            alert(res.data.error);
+        }
+    }
+    catch (e) {
+        downloading.value = false;
+        console.error(e);
+
+        alert('An error occured while exporting reservations');
+    }
+}
 
 const debounce = (fn: Function, ms = 300) => {
     let timeoutId: ReturnType<typeof setTimeout>;
@@ -68,10 +89,12 @@ onMounted(() => {
 </script>
 
 <template>
-    <EligibilityHeader :page="1" @statusChanged="handleStatusChange($event)" @paginate="paginate($event)"/>
+    <EligibilityHeader :downloading="downloading" :page="currentPage" :lastPage="lastPage"
+        @statusChanged="changeElig($event)" @exportCsv="exportEligibility($event)" />
 
     <div class="eligibility-container">
-        <EligibilityCard class="eligibility" v-for="eligibility in eligibilityList" :key="eligibility.id" :eligibility="eligibility" />
+        <EligibilityCard class="eligibility" v-for="eligibility in eligibilityList" :key="eligibility.id"
+            :eligibility="eligibility" />
     </div>
 </template>
 

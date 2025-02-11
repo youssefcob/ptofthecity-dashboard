@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import Modal from '@/components/sharedComponents/Modal.vue';
 import type { Count } from '@/interfaces/content';
 import Http from '@/mixins/Http';
 import { onMounted, ref, type Ref } from 'vue';
+import AddImg from './AddImg.vue';
 
 const count: Ref<Count[]> = ref([]);
 const getCount = async () => {
@@ -15,6 +17,8 @@ const getCount = async () => {
 const getCountByTitle = (title: string) => {
     return count.value.find((c: Count) => c.title === title)?.count || 0;
 }
+const addImgModal = ref<InstanceType<typeof Modal> | null>(null);
+
 onMounted(() => {
     getCount();
 })
@@ -22,6 +26,8 @@ onMounted(() => {
 
 
 <template>
+    <Modal ref="addImgModal"><AddImg/></Modal>
+    <div class="nav"><div class="btn add" @click="addImgModal?.openModal">Add Image</div></div>
     <div class="grid-container">
         <div class="grid-item">
             <div class="box">
@@ -46,6 +52,7 @@ onMounted(() => {
 
                 </div>
             </div>
+            
         </div>
         <div class="grid-item">
             <div class="box">
@@ -115,6 +122,14 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
+.nav{
+    display: flex;
+    justify-content: flex-start;
+    padding: 0.5rem;
+    gap: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    
+}
 .grid-container {
     display: flex;
     flex-direction: column;

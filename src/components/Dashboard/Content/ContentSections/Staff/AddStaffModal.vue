@@ -3,7 +3,6 @@ import Btn from '@/components/sharedComponents/btn.vue';
 import FileInputField from '@/components/sharedComponents/FileInputField.vue';
 import InputField from '@/components/sharedComponents/InputField.vue';
 import Http from '@/mixins/Http';
-import { title } from 'process';
 import { ref } from 'vue';
 
 const loading = ref(false);

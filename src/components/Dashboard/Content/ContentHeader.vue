@@ -39,6 +39,10 @@ onMounted(() => {
                 Images
             </router-link>
 
+            <router-link to="/dashboard/content/whoWeAre" class="btn nav-btn" :class="{ active: activeButton === 'whoWeAre' }" @click="handleClick('whoWeAre')">
+                Who We Are
+            </router-link>
+
         </div>
     </div>
 

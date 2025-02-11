@@ -18,11 +18,13 @@ const currentPage: Ref<number> = ref(1);
 const lastPage: Ref<number> = ref(0);
 
 
+const getReservations = async (query: string = '', csv: boolean = false) => {
+    // console.log(`reservation/filter?${query}`)
 
-const getReservations = async (status: string = 'pending') => {
-    const res = await Http.get(`reservation/status/${status}?page=${currentPage.value}`, {
+    const res = await Http.get(`reservation/filter?${query}`, {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
-    });
+    })
+
 
     reservationsList.value = res.data.data;
     // currentPage.value = res.data.current_page;
@@ -42,17 +44,42 @@ const getReservations = async (status: string = 'pending') => {
 
 }
 
-const paginate = (page: number) => {
-    if (currentPage.value == 1 && page < 0) return;
-    if (currentPage.value == lastPage.value && page > 0) return;
-    currentPage.value = currentPage.value + page;
+const downloading: Ref<boolean> = ref(false);
 
-    debouncedGetReservations();    // getReservations();
+const exportReservations = async (query: string = '') => {
+    try {
+        downloading.value = true;
+        const res = await Http.get(`reservation/filter/export?${query}`, {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        });
+        // console.log(res.data);
+
+        downloading.value = false;
+        // return;
+        if (res.status === 200) {
+            const url = window.URL.createObjectURL(new Blob([res.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            const currentDate = new Date().toISOString().split('T')[0];
+            link.setAttribute('download', `reservations_${currentDate}.csv`);
+            document.body.appendChild(link);
+            link.click();
+        } else {
+            alert(res.data.error);
+        }
+    }
+    catch (e) {
+        downloading.value = false;
+        console.error(e);
+
+        alert('An error occured while exporting reservations');
+    }
 }
 
-const changeReservations = (status: string) => {
-    getReservations(status);
-    currentPage.value = 1;
+
+const changeReservations = (query: string) => {
+    debouncedGetReservations(query);
+    // currentPage.value = 1;
 
 }
 
@@ -71,7 +98,8 @@ onMounted(() => {
 });
 </script>
 <template>
-    <ReservationsHeader :page="currentPage" @paginate="paginate($event)" @statusChanged="changeReservations($event)" />
+    <ReservationsHeader :downloading="downloading" :page="currentPage" :lastPage="lastPage"
+        @statusChanged="changeReservations($event)" @exportCsv="exportReservations($event)" />
 
     <div class="reservations-container">
         <template v-for="reservation in reservationsList">

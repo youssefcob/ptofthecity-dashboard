@@ -15,6 +15,7 @@ const emit = defineEmits(['input']);
 
 const listInput: Ref<InstanceType<typeof InputField> | null> = ref(null);
 const addToList = () => {
+    if (!input.value) return;
     list.value.push(input.value);
     input.value = '';
     listInput.value?.clear();

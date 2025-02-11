@@ -21,7 +21,7 @@ const Http = {
                 const response = await axios.get(url, { headers });
                 return response
             } catch (error: any) {
-                console.error(error.response.data.message);
+                console.error(error);
                 return error.response;
             }
         },

@@ -1,12 +1,7 @@
 <script setup lang="ts">
 import Btn from '@/components/sharedComponents/btn.vue';
-import type { Clinic } from '@/interfaces/content';
 import Http from '@/mixins/Http';
 import { ref } from 'vue';
-
-const props = defineProps<{
-    id: number;
-}>();
 
 const files = ref<File[]>([]);
 const errorMessages = ref<string[]>([]);
@@ -33,12 +28,9 @@ const copyRes = () => {
     navigator.clipboard.writeText(res);
 };
 
-const responses = ref<{ [key: string]: Clinic }>({});
+const responses = ref<{ [key: string]: string }>({});
 
 const submit = async () => {
-    if(!props.id) {
-        return;
-    }
 
     if (files.value.length === 0) {
         return;
@@ -53,7 +45,7 @@ const submit = async () => {
         const formData = new FormData();
         formData.append('image', file);
         try {
-            const res = await Http.post(`clinic/upload/${props.id}`, formData,  {
+            const res = await Http.post('image', formData,  {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
             );
@@ -84,8 +76,6 @@ const submit = async () => {
     <div class="addImgWrapper">
         <input type="file" name="filefield" multiple @change="handleFileChange">
         <span class="ps">Max Size: 2MB</span>
-        <div class="ps">LandScape Image aspect ratio of 2:3 or 3:4</div>
-
         <div class="filesNamesWrapper" v-if="files.length > 0 || errorMessages.length > 0" >
             <ul>
                 <li v-for="file in files" :key="file.name">{{ file.name }}</li>
@@ -100,7 +90,7 @@ const submit = async () => {
         <div class="res" v-if="Object.keys(responses).length > 0 && errorMessages.length === 0" @click="copyRes()">
             <h3>Click To Copy</h3>
             <ul>
-                <li v-for="(link, name) in responses" :key="name">{{ name }}: {{ link.media }}</li>
+                <li v-for="(link, name) in responses" :key="name">{{ name }}: {{ link }}</li>
             </ul>
         </div>
         <Btn class="add" :loading="loading" @click="submit()">Submit</Btn>

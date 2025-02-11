@@ -35,7 +35,7 @@ const emitInput = (e: Event) => {
 
 }
 onMounted(() => {
-    
+
     emit(`input`, (input.value));
 });
 const asterisk: Ref<HTMLElement | null> = ref(null);
@@ -131,7 +131,7 @@ onMounted(() => {
         <input :disabled="$props.disabled" class="input-field" v-if="!props.height"
             :style="`width:100%; ${CalcHeight()};${($props.error) ? 'border-color:red' : ''}`" v-maska="mask"
             :type="props.Password ? 'password' : 'text'" v-model="input" @input="handleInput($event)">
-            
+
         <textarea :disabled="$props.disabled" class="input-field" v-if="$props.height"
             :style="`width:100%;resize:none; ${CalcHeight()};${($props.error) ? 'border-color:red' : ''}`"
             floatlabeltype type="text" v-model="input" @input="handleInput($event)" />
@@ -178,8 +178,8 @@ onMounted(() => {
 
 
         &.active {
-            top: -35%;
-            left:.7rem;
+            top: -1.5rem !important;
+            left: .7rem;
             // background-color: white;
             transition: all 0.3s ease-in-out;
             font-size: 0.9rem;

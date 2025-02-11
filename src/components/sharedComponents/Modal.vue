@@ -55,21 +55,38 @@ dialog {
     background-color: rgba(44, 50, 51, 0.40);
     position: fixed;
     border: none;
-    // top: 10%;
-    // left: 15%;
+    opacity: 0;
+    transition: all 0.2s allow-discrete;
     user-select: none;
 
-    margin:auto;
+    margin: auto;
+
     @media screen and (max-width: 800px) {
         top: 5%;
         left: 5%;
 
     }
 
+    &[open] {
+        transition: all 1s allow-discrete;
+
+        opacity: 1;
+
+        &::backdrop {
+            background-color: rgba(44, 50, 51, 0.80);
+            user-select: none;
+            transition: all 5s ease-in-out;
+
+        }
+    }
+
     // z-index: 4;
     &::backdrop {
-        background-color: rgba(44, 50, 51, 0.80);
+        background-color: rgba(44, 50, 51, 0.0);
         user-select: none;
+        transition: all 5s ease-in-out;
+
+
 
     }
 
@@ -78,5 +95,22 @@ dialog {
         user-select: none;
 
     }
+}
+
+@starting-style {
+    dialog {
+        &[open] {
+            opacity: 0;
+
+        }
+
+        &::backdrop {
+            background-color: rgba(44, 50, 51, 0.0);
+
+
+
+        }
+    }
+
 }
 </style>

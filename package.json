@@ -10,7 +10,8 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist",
+    "deploy": "node node_modules/gh-pages/bin/gh-pages-clean && gh-pages -d dist",
+    "predeploy-prod": "npm run build",
     "deploy-prod": "node node_modules/gh-pages/bin/gh-pages-clean && gh-pages -d dist -b prod -f"
   },
   "dependencies": {

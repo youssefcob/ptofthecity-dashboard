@@ -15,33 +15,34 @@ const props = defineProps({
     }
 });
 
-const editForm: Service= reactive({
-    title: '',
-    description: '',
-    listHeader: '',
-    path: '',
-    list: []
+const editForm: Service = reactive({
+    title: props.service.title,
+    description: props.service.description,
+    listHeader: props.service.listHeader,
+    path: props.service.path,
+    list: props.service.list
 });
 
 
 const emit = defineEmits(['cancel', 'serviceChanged']);
 const loading = ref(false);
 const submit = async () => {
-    console.log(editForm);
-    loading.value = true;
-    let res = await Http.put(`services/${props.service.id}`, editForm, {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-    });
-    loading.value = false;
-    console.log(res);
-    emit('serviceChanged', res.data);
-    emit('cancel');
+    try {
+        console.log(editForm);
+        loading.value = true;
+        let res = await Http.put(`services/${props.service.id}`, editForm, {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        });
+        loading.value = false;
+        console.log(res);
+        emit('serviceChanged', res.data);
+        emit('cancel');
+    } catch (error) {
+        console.log(error)
+        loading.value = false;
 
-  
-
-
+    }
 }
-
 const cancel = () => {
     emit('cancel');
 }
@@ -63,17 +64,18 @@ const addToList = (list: string[]) => {
 
         <div class="form-wrapper">
             <div>
-                <InputField required class="field" :value="props.service.title"  placeHolder="Service Title" id="serviceTitle"
-                    @input="editForm.title = $event" />
+                <InputField required class="field" :value="editForm.title" placeHolder="Service Title"
+                    id="serviceTitle" @input="editForm.title = $event" />
 
-                <InputField height="18.5rem" :value="props.service.description" required class="field" placeHolder="Description" id="description"
-                    @input="editForm.description = $event" />
+                <InputField height="18.5rem" :value="editForm.description" required class="field"
+                    placeHolder="Description" id="description" @input="editForm.description = $event" />
             </div>
             <div>
                 <!-- <FileInputField @input="image = $event" placeHolder="Image" /> -->
 
-                <InputField class="field" :value="props.service.listHeader" placeHolder="List Header" id="listHeader" @input="editForm.listHeader = $event" />
-                <ServiceListHelper :list="props.service.list" @input="addToList($event)" />
+                <InputField class="field" :value="editForm.listHeader" placeHolder="List Header" id="listHeader"
+                    @input="editForm.listHeader = $event" />
+                <ServiceListHelper :list="editForm.list" @input="addToList($event)" />
             </div>
         </div>
 

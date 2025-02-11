@@ -22,6 +22,17 @@ export type Schedule = {
     sunday: day,
 };
 
+export type Staff = {
+    id: number;
+    title: string;
+    first_name: string;
+    last_name: string;
+    bio: string;
+    schedule: string;
+    image: string;
+    occupation: string;
+};
+
 export type Clinic = {
     // [key: string]:[
     // {
