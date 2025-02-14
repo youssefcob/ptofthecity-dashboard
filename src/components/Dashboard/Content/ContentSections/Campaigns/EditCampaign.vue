@@ -2,7 +2,7 @@
 import Btn from '@/components/sharedComponents/btn.vue';
 import InputField from '@/components/sharedComponents/InputField.vue';
 import ListInput from '@/components/sharedComponents/ListInput.vue';
-import MultiFileInputField from '@/components/sharedComponents/MultiFileInputField.vue';
+import type { Campaign } from '@/interfaces/content';
 import Http from '@/mixins/Http';
 import { reactive, ref } from 'vue';
 
@@ -13,27 +13,37 @@ const loading = ref(false);
 type Form = {
     title: string,
     slogans: string[],
-    images: FormData,
     animation_interval: string,
     buttonLink: string,
     buttonText: string
 }
 
-const form: Form = reactive({
-    title: '',
-    slogans: [],
-    images: new FormData(),
-    animation_interval: '',
-    buttonLink: '',
-    buttonText: ''
-})
+
+const props = defineProps(
+    {
+        campaign: {
+            type: Object as () => Campaign,
+            required: true
+        }
+    }
+);
+
+const form: Form = {
+    title: props.campaign.title,
+    slogans: props.campaign.slogans,
+    animation_interval: props.campaign.animation_interval,
+    buttonLink: props.campaign.buttonLink,
+    buttonText: props.campaign.buttonText,
+}
+
+
 
 const submitForm = async () => {
 
-    let modifiedForm = modifyForm();
     try {
+        console.log(form)
         loading.value = true;
-        const res = await Http.post('content/campaign', modifiedForm, { Authorization: `Bearer ${localStorage.getItem('token')}` , 'Content-Type': 'multipart/form-data' });
+        const res = await Http.patch(`content/campaign/${props.campaign.id}`, form, { Authorization: `Bearer ${localStorage.getItem('token')}` });
 
         console.log(res.data);
         loading.value = false;
@@ -45,10 +55,10 @@ const submitForm = async () => {
                 alert('Unauthorized');
                 window.location.href = '/login';
             }
+            console.log(res);
             return;
         }
-
-        emit('submit', res.data);
+        window.location.reload();
     } catch (error) {
         loading.value = false;
 
@@ -56,29 +66,6 @@ const submitForm = async () => {
     }
 }
 
-const modifyForm = () => {
-    let frm = new FormData();
-    form.slogans.forEach((slogan) => {
-        frm.append('slogans[]', slogan);
-    });
-    form.images.forEach((value, key) => {
-        frm.append('images[]', value);
-    });
-    frm.append('title', form.title);
-    frm.append('animation_interval', form.animation_interval);
-    frm.append('buttonLink', form.buttonLink);
-    frm.append('buttonText', form.buttonText);
-
-    return frm;
-    
-}
-
-
-
-
-const modifyImages = (images: FormData) => {
-    form.images = images;
-}
 
 
 </script>
@@ -86,25 +73,23 @@ const modifyImages = (images: FormData) => {
 <template>
 
     <div class="form-wrapper">
+        <div class="right">
+            <ListInput placeHolder="Add Slogans" @input=" form.slogans = $event" :list="campaign.slogans" />
 
+        </div>
         <div class="left">
-            <InputField placeHolder="Add Title" @input="form.title = $event" />
-            <InputField placeHolder="Interval In ms" @input="form.animation_interval = $event" />
-            <InputField placeHolder="Button Link" @input="form.buttonLink = $event" />
-            <InputField placeHolder="Button text" @input="form.buttonText = $event" />
+            <InputField placeHolder="Add Title" @input="form.title = $event" :value="campaign.title" />
+            <InputField placeHolder="Interval In ms" @input="form.animation_interval = $event"
+                :value="campaign.animation_interval" />
+            <InputField placeHolder="Button Link" @input="form.buttonLink = $event" :value="campaign.buttonLink" />
+            <InputField placeHolder="Button text" @input="form.buttonText = $event" :value="campaign.buttonText" />
+
             <div class="btn-wrapper">
                 <Btn class="btn add" @click="submitForm()" :loading="loading">submit</Btn>
                 <div class="btn cancel" @click="emit('close')">Cancel</div>
             </div>
         </div>
-        <div class="right">
-            <div>
-            <MultiFileInputField @input="modifyImages($event)" />
-            <div class="ps">landscape aspect ratio 2:3 / 3:4 </div>
-        </div>
-            <ListInput placeHolder="Add Slogans" @input=" form.slogans = $event" />
-        </div>
-
+        
     </div>
 </template>
 

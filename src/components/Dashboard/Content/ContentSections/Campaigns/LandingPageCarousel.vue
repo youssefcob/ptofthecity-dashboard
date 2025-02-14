@@ -6,6 +6,8 @@ import Http from '@/mixins/Http';
 import { ref, onMounted, type Ref, watch } from 'vue';
 import AddCampaignModal from './AddCampaignModal.vue';
 import Btn from '@/components/sharedComponents/btn.vue';
+import EditCampaign from './EditCampaign.vue';
+import CampaignCard from './CampaignCard.vue';
 
 
 const landingPage = ref<{
@@ -23,10 +25,14 @@ const landingPage = ref<{
 
 const campaignModal: Ref<InstanceType<typeof Modal> | null> = ref(null);
 
+
 const loading: Ref<boolean> = ref(false);
 
 const handleSubmission = (data: any) => {
-    landingPage.value.push(data);
+    console.log(data);
+    let updatedLandingPage = landingPage.value;
+    updatedLandingPage.push(...data);
+    landingPage.value = updatedLandingPage;
     campaignModal.value?.closeModal();
 }
 
@@ -60,6 +66,8 @@ const openModal = () => {
     campaignModal.value?.openModal()
 }
 
+
+
 onMounted(() => {
     fetchLandingPage();
 });
@@ -67,9 +75,10 @@ onMounted(() => {
 
 <template>
     <Modal ref="campaignModal">
-        <AddCampaignModal  @close="campaignModal?.closeModal()" @submit="handleSubmission($event)" />
+        <AddCampaignModal @close="campaignModal?.closeModal()" @submit="handleSubmission($event)" />
 
     </Modal>
+
     <div class="landing-page">
         <div class="header">
             <h2>Landing Page</h2>
@@ -80,27 +89,8 @@ onMounted(() => {
 
         <div class="card" v-for="(campaign, index) in landingPage" :key="index">
             <!-- {{campaign}} -->
-            <div class="card-header">
-                <h2>Title: {{ campaign.title }}</h2>
-                <Btn class="delete" @click="deleteCampaign(campaign.id)" :loading="loading">Delete</Btn>
-            </div>
-
-            <div class="slogans">
-                <h3>Slogans: </h3><span> [<template v-for="(slogan, index) in campaign.slogans" :key="index">{{ slogan }},
-                    </template>]</span>
-            </div>
-
-            <h3>Animation: {{ campaign.animation }}</h3>
-
-            <h3>Interval: {{ campaign.animation_interval }}</h3>
-            <h3>Button Link: {{ campaign.buttonLink }}</h3>
-            <h3>Button Text: {{ campaign.buttonText }}</h3>
-            <h3>Images: </h3>
-            <div class="images">
-                <a v-for="(image, index) in campaign.images" :key="index" :href="image.path">Image {{ index }}<br></a>
-            </div>
-
-            <!-- {{ landingPage }} -->
+            <CampaignCard :campaign="campaign" @delete="deleteCampaign($event)"
+                :loading="loading" />
         </div>
     </div>
 </template>
@@ -129,7 +119,13 @@ onMounted(() => {
             display: flex;
             justify-content: space-between;
             align-items: center;
+
+            .btn-wrapper {
+                display: flex;
+                gap: 1rem;
+            }
         }
+
         .slogans {
             display: flex;
 

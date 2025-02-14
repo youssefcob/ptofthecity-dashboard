@@ -210,3 +210,17 @@ export type User = {
     role: string;
     updated_at: string;
 };
+
+
+export type Campaign = {
+    id: number,
+    title: string,
+    slogans: string[],
+    images: {
+        path: string
+    }[],
+    animation_interval: string,
+    buttonLink: string,
+    buttonText: string,
+    animation: string
+}
