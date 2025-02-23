@@ -5,7 +5,7 @@
         <div class="modal-container">
             <dialog ref="modal">
                 <div ref="container">
-                    <slot></slot>
+                    <slot :modalData="modalData"></slot>
                 </div>
             </dialog>
         </div>
@@ -16,19 +16,23 @@
 <script setup lang="ts">
 import { ref, type Ref } from 'vue';
 
+const modalData = ref(null);
+
+
 const modal: Ref<HTMLDialogElement | null> = ref(null);
 
 // const open: Ref<HTMLButtonElement | null> = ref(null);
 let modalState = ref(false);
 const container: Ref<HTMLElement | null> = ref(null);
-const openModal = () => {
+
+const openModal = (data?: any) => {
+    modalData.value = data;
     if (modal.value) modal.value.showModal();
     setTimeout(() => {
         modalState.value = true;
-
     }, 100);
-
 }
+
 const closeModal = () => {
     if (modal.value) modal.value.close();
     modalState.value = false;
