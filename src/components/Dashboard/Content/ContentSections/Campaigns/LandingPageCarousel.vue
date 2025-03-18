@@ -15,6 +15,7 @@ const landingPage = ref<{
     title: string,
     slogans: string[],
     images: {
+        id:number,
         path: string
     }[],
     animation_interval: string,

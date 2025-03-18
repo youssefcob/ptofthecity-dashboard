@@ -77,11 +77,14 @@ const scheduleForm = reactive({
 });
 const emit = defineEmits(['clinicUpdated'])
 
-const submit = async () => {
+const submitSchedule = async () => {
+    console.log('schedule')
+    console.log(props.id)
     try{
-        let res = await Http.put(`clinic/schedule/${props.id}`, {schedule : scheduleForm}, {
+        let res = await Http.put(`clinic/schedule/${props.id}`, {schedule: scheduleForm}, {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
         });
+        console.log(res.data)
         emit('clinicUpdated', res.data);
     } catch (error) {
         console.log(error)
@@ -103,7 +106,7 @@ const submit = async () => {
                 </div>
             </div> -->
 
-    <form class="schedule-form">
+    <div class="schedule-form">
 
         <div class="schedule">
             <h2 class="title">Edit Schedule</h2>
@@ -118,9 +121,9 @@ const submit = async () => {
             </div>
         </div>
 
-        <Btn class="btn" :loading="loading" @click="submit()">Submit</Btn>
+        <Btn class="btn" :loading="loading" @click="submitSchedule">Submit</Btn>
 
-    </form>
+    </div>
 
 </template>
 

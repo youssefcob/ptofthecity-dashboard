@@ -35,7 +35,7 @@ const closeModal = () => {
 
 const loading = ref(false);
 const submit = async () => {
-    // try{
+    try{
     console.log('submit')
 
     loading.value = true;
@@ -53,14 +53,16 @@ const submit = async () => {
             window.location.href = '/login';
         }
 
-    // } catch (error: any) {
-    //     console.log(error.status)
-    //     if(error.status === 401){
-    //         alert('Unauthorized');
-    //         window.location.href = '/login';
-    //     }
-        // alert(error)
-    // }
+    } catch (error: any) {
+        console.log(error.status)
+        if(error.status === 401){
+            alert('Unauthorized');
+            window.location.href = '/login';
+        }
+        alert(error)
+
+        loading.value = false;
+    }
 }
 // console.log(form)
 

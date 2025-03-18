@@ -15,7 +15,7 @@ const getClinics = async () => {
     clinics.value = data.data;
     searchedClinics.value = data.data;
     clinic_cities.value = Object.keys(data.data);
-    console.log(data)
+    // console.log(data)
 }
 
 const deleteClinic = (id: number) => {
