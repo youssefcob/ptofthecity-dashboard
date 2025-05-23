@@ -99,18 +99,26 @@ const updateInsurance = (reservation: Reservation) => {
         reservationsList.value[index].eligibility_status = reservation.eligibility_status;
     }
 }
+
+const updateDate = (reservation: Reservation) => {
+    const index = reservationsList.value.findIndex((r) => r.id === reservation.id);
+    console.log('index', index);
+    if (index !== -1) {
+        reservationsList.value[index].date_in_unix = reservation.date_in_unix;
+    }
+}
 onMounted(() => {
     getReservations();
 });
 </script>
 <template>
     <ReservationsHeader :downloading="downloading" :page="currentPage" :lastPage="lastPage"
-        @statusChanged="changeReservations($event)" @exportCsv="exportReservations($event)" />
+        @statusChanged="changeReservations($event)"  @exportCsv="exportReservations($event)" />
 
     <div class="reservations-container">
         <template v-for="reservation in reservationsList">
             <ReservationCard class="reservation" v-if="reservation.clinic" :reservation="reservation"
-                :key="reservation.id" @insuranceUpdated="updateInsurance($event)" />
+                :key="reservation.id" @insuranceUpdated="updateInsurance($event)" @dateChanged="updateDate($event)"/>
         </template>
     </div>
 

@@ -109,6 +109,7 @@ export type Reservation = {
     gender: "male" | "female" | "other";
     phone: string;
     email: string;
+    returning:boolean;
     method: null | string;
     status: "pending" | "confirmed" | "cancelled";
     payment: "self_pay" | "insurance" | "workers_compensation";

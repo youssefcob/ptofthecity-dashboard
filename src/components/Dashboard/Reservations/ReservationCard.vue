@@ -8,6 +8,7 @@ import InputField from '@/components/sharedComponents/InputField.vue';
 import Btn from '@/components/sharedComponents/btn.vue';
 import Modal from '@/components/sharedComponents/Modal.vue';
 import EditDateModal from './EditDateModal.vue';
+import { watch, computed } from 'vue';
 
 
 const props = defineProps({
@@ -21,6 +22,8 @@ const date = ref(props.reservation?.date_in_unix);
 console.log(props.reservation);
 
 const activeButton = ref(props.reservation?.status);
+
+// const emit = defineEmits(['updateReservation']);
 
 const changeReservationStatus = async (st: "pending" | "confirmed" | "cancelled") => {
     activeButton.value = st;
@@ -57,12 +60,25 @@ const toDate = (timestamp: number | string | undefined) => {
     return nyDate.format('MM-DD-YYYY HH:mm');
 }
 
+const parsedDate = ref(toDate(date.value));
+
+watch(
+    () => props.reservation?.date_in_unix,
+    (newVal) => {
+        date.value = newVal;
+        parsedDate.value = toDate(newVal);
+    },
+    { immediate: true }
+);
+
+
+
 let form = reactive({
     co_pay_amount: '',
     eligibility_status: '',
 })
 
-const emit = defineEmits(['insuranceUpdated']);
+const emit = defineEmits(['insuranceUpdated', 'dateChanged']);
 
 const loading = ref(false);
 const submit = async () => {
@@ -97,6 +113,12 @@ const submit = async () => {
     }
 };
 const editDateModal: Ref<InstanceType<typeof Modal> | null> = ref(null);
+
+const dateChanged = (reservation: Reservation) => {
+    emit('dateChanged', reservation);
+    editDateModal.value?.closeModal()
+    // window.location.reload();
+}
 </script>
 
 
@@ -104,7 +126,7 @@ const editDateModal: Ref<InstanceType<typeof Modal> | null> = ref(null);
     <div class="card">
         <Modal ref="editDateModal">
             <EditDateModal :reservation="props.reservation" @close="editDateModal?.closeModal()"
-                @updateReservation="submit" />
+                @updateReservation="dateChanged($event)" />
         </Modal>
 
         <div class="info">
@@ -127,16 +149,19 @@ const editDateModal: Ref<InstanceType<typeof Modal> | null> = ref(null);
             <p><strong>Clinic: </strong> {{ props.reservation?.clinic.name }}</p>
             <p><strong>Service: </strong> {{ props.reservation?.service?.title }}</p>
 
-            <p><strong>Date: </strong> {{ toDate(date) }}</p>
-            <Btn class="edit" @click="editDateModal?.openModal()">Edit Date</Btn>
+            <p><strong>Date: </strong> {{ parsedDate }}</p>
+            <!-- <Btn class="edit" @click="editDateModal?.openModal()">Edit Date</Btn> -->
             <p><strong>Submitted at: </strong> {{ toDate($props.reservation?.created_at) }}</p>
+            <p><strong>Returning patient: </strong> {{ props.reservation?.returning ? "Yes" : "No" }}</p>
+
+
             <p><strong>Payment: </strong> {{(props.reservation?.payment.replace(/_/g, ' ').replace(/^\w/, c =>
-                c.toUpperCase())) }}</p>
+                c.toUpperCase()))}}</p>
 
             <p v-if="$props.reservation?.about_your_pain"><strong>Description: </strong>{{
                 props.reservation?.about_your_pain }}
             </p>
-            <template v-if="props.reservation?.payment == 'insurance'">
+            <template v-if="props.reservation?.payment == 'insurance' && props.reservation?.returning == false">
                 <h3>Insurance Info:</h3>
                 <p><strong>Insurance: </strong> {{ props.reservation?.insurance_company }}</p>
                 <p><strong>Member ID: </strong> {{ props.reservation?.member_id }}</p>
@@ -165,7 +190,7 @@ const editDateModal: Ref<InstanceType<typeof Modal> | null> = ref(null);
 
             </div>
 
-            <div v-if="props.reservation?.insurance_company" class="insurance-fields">
+            <div v-if="props.reservation?.payment == 'insurance' && props.reservation?.returning == false" class="insurance-fields">
                 <div class="form-field">
                     <InputField height="15rem" class="inputField" placeHolder="Insurance Eligibility Status"
                         @input="form.eligibility_status = $event" :value="props.reservation?.eligibility_status" />
