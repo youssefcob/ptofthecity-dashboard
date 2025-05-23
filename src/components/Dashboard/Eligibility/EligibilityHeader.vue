@@ -107,7 +107,9 @@ const constructQuery = () => {
     query.value = q.join('&');
     console.log(query.value);
 
-    emit('statusChanged', query.value);
+    // emit('statusChanged', query.value);
+    return query.value;
+
 }
 
 
@@ -157,9 +159,9 @@ onMounted(async () => {
                 <option class="btn" :class="{ active: activeButton === 'all' }" value="all">All</option>
 
                 <option class="btn" :class="{ active: activeButton === 'pending' }" value="pending">Pending</option>
-                <option class="btn" :class="{ active: activeButton === 'confirmed' }" value="confirmed">Confirmed
+                <option class="btn" :class="{ active: activeButton === 'accepted' }" value="accepted">Accepted
                 </option>
-                <option class="btn" :class="{ active: activeButton === 'cancelled' }" value="cancelled">Cancelled
+                <option class="btn" :class="{ active: activeButton === 'rejected' }" value="rejected">Rejected
                 </option>
             </select>
         </div>

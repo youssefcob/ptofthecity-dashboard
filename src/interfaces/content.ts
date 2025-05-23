@@ -111,7 +111,11 @@ export type Reservation = {
     email: string;
     method: null | string;
     status: "pending" | "confirmed" | "cancelled";
-    payment: "self_pay" | "insurance";
+    payment: "self_pay" | "insurance" | "workers_compensation";
+    date_of_accident: null | string;
+    case_number: null | string;
+    lawyer_name: null | string;
+    lawyer_phone_number: null | string;
     insurance_company: null | string;
     member_id: null | string;
     date_in_unix: number;
@@ -121,6 +125,11 @@ export type Reservation = {
     created_at: string;
     updated_at: string;
     deleted_at: null;
+    service_id: null | number;
+    service: null | Service;
+    dob: string;
+    co_pay_amount: string;
+    eligibility_status:string;
 }
 
 export type Message = {

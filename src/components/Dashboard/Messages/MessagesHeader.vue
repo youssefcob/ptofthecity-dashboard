@@ -15,8 +15,10 @@ const handleClick = (buttonName: string) => {
     activeButton.value = buttonName;
     
 
-    emit('statusChanged', (buttonName === 'pending') ? false : true);
+    // emit('statusChanged', (buttonName == 'pending') ? false : true);
 };
+
+
 
 const page = (direction: number) => {
     emit('paginate', direction);
@@ -38,10 +40,10 @@ const page = (direction: number) => {
         </div>
         <div class="btn-search-wrapper">
             <button class="btn" :class="{ active: activeButton === 'pending' }"
-            @click="handleClick('pending')">Pending</button>
+            @click="handleClick('pending');emit('statusChanged', false)">Pending</button>
             
             <button class="btn" :class="{ active: activeButton === 'is_read' }"
-                @click="handleClick('is_read')">Read </button>
+                @click="handleClick('is_read');emit('statusChanged', true)">Read </button>
      
            
         </div>

@@ -28,6 +28,8 @@ const getEligibility = async (query: string = '') => {
     });
     eligibilityList.value = res.data.data;
     lastPage.value = res.data.last_page;
+    currentPage.value = res.data.current_page;
+
 
     console.log(res.data);
     if (res.status === 401) {

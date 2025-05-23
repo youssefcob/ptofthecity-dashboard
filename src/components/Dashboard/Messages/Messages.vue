@@ -10,17 +10,22 @@ const MessagesList: Ref<Message[]> = ref([]);
 const currentPage: Ref<number> = ref(1);
 
 const lastPage: Ref<number> = ref(0);
+const status: Ref<boolean> = ref(false);
 
 
-const getMessages = async (status: string = 'false') => {
-    const res = await Http.get(`admin/message/${status}?page=${currentPage.value}`, {
+const getMessages = async () => {
+    console.log('getMessages', status.value);
+    const res = await Http.get(`admin/message/${status.value}?page=${currentPage.value}`, {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
-    console.log(res);
+    // console.log(res);
+    // console.log('currentPage', currentPage.value);
+    // console.log('status', status.value);
 
     MessagesList.value = res.data.data;
     // currentPage.value = res.data.current_page;
     lastPage.value = res.data.last_page;
+    // console.log('lastPage', lastPage.value);
 
     if (res.status === 401) {
         window.location.href = '/login';
@@ -45,9 +50,10 @@ const paginate = (page: number) => {
     debouncedGetMessages();    // getMessages();
 }
 
-const changeMessages = (status: string) => {
-    getMessages(status);
+const changeMessages = (s: boolean) => {
+    status.value = s;
     currentPage.value = 1;
+    getMessages();
 
 }
 

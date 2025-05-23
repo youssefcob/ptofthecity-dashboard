@@ -13,7 +13,7 @@ const props = defineProps({
 
 const activeButton:Ref<number> = ref(props.message?.is_read);
 
-console.log(props.message);
+// console.log(props.message);
 const changeMessageStatus = async (st: number) => {
     if (activeButton.value === st) return;
     let sta;
@@ -47,8 +47,8 @@ const changeMessageStatus = async (st: number) => {
                 <h2>{{props.message?.subject}}</h2>
 
                 <div class="btns-wrapper">
-                    <button :class="{ active: activeButton === 1 }" class="btn" @click="changeMessageStatus(1)">Read</button>
-                    <button :class="{ active: activeButton === 0 }" class="btn" @click="changeMessageStatus(0)">Not Read</button>
+                    <button :class="{ active: props.message.is_read == 1 }" class="btn" @click="changeMessageStatus(1)">Read</button>
+                    <button :class="{ active: props.message.is_read == 0 }" class="btn" @click="changeMessageStatus(0)">Not Read</button>
 
                 </div>
             </div>

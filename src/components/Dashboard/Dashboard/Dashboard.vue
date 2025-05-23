@@ -81,12 +81,12 @@ onMounted(() => {
                 <h2>Careers</h2>
                 <div class="count-wrapper">
                     <div class="count">
-                        <span> {{ getCountByTitle('career_applications_0') }} </span>
+                        <span> {{ getCountByTitle('career_applications_unread') }} </span>
                         <h3>Not Viewed</h3>
 
                     </div>
                     <div class="count">
-                        <span> {{ getCountByTitle('career_applications_1') }} </span>
+                        <span> {{ getCountByTitle('career_applications_read') }} </span>
                         <h3>Viewed</h3>
 
                     </div>

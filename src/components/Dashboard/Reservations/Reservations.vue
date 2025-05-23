@@ -18,7 +18,7 @@ const currentPage: Ref<number> = ref(1);
 const lastPage: Ref<number> = ref(0);
 
 
-const getReservations = async (query: string = '', csv: boolean = false) => {
+const getReservations = async (query: string = '') => {
     // console.log(`reservation/filter?${query}`)
 
     const res = await Http.get(`reservation/filter?${query}`, {
@@ -27,7 +27,7 @@ const getReservations = async (query: string = '', csv: boolean = false) => {
 
 
     reservationsList.value = res.data.data;
-    // currentPage.value = res.data.current_page;
+    currentPage.value = res.data.current_page;
     lastPage.value = res.data.last_page;
     console.log(res.data.data);
     if (res.status === 401) {
@@ -92,7 +92,13 @@ const debounce = (fn: Function, ms = 300) => {
 };
 const debouncedGetReservations = debounce(getReservations, 300);
 
-
+const updateInsurance = (reservation: Reservation) => {
+    const index = reservationsList.value.findIndex((r) => r.id === reservation.id);
+    if (index !== -1) {
+        reservationsList.value[index].co_pay_amount = reservation.co_pay_amount;
+        reservationsList.value[index].eligibility_status = reservation.eligibility_status;
+    }
+}
 onMounted(() => {
     getReservations();
 });
@@ -104,7 +110,7 @@ onMounted(() => {
     <div class="reservations-container">
         <template v-for="reservation in reservationsList">
             <ReservationCard class="reservation" v-if="reservation.clinic" :reservation="reservation"
-                :key="reservation.id" />
+                :key="reservation.id" @insuranceUpdated="updateInsurance($event)" />
         </template>
     </div>
 

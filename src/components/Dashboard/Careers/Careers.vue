@@ -31,6 +31,8 @@ const getCareers = async () => {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
     careersList.value = res.data.data;
+    lastPage.value = res.data.last_page;
+
     console.log(res.data.data);
     if (res.status === 401) {
         window.location.href = '/login';
@@ -68,7 +70,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <CareersHeader :page="1" @statusChanged="handleStatusChange($event)" @paginate="paginate($event)"
+    <CareersHeader :page="currentPage" @statusChanged="handleStatusChange($event)" @paginate="paginate($event)"
         @jobChanged="handleJobChange($event)" />
 
     <div class="careers-container">
