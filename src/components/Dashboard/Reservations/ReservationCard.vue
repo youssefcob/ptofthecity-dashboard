@@ -54,7 +54,7 @@ const toDate = (timestamp: number | string | undefined) => {
     // console.log('New York Date:', nyDate.format());
 
     // Return the formatted date string
-    return nyDate.format('YYYY-MM-DD HH:mm');
+    return nyDate.format('MM-DD-YYYY HH:mm');
 }
 
 let form = reactive({
