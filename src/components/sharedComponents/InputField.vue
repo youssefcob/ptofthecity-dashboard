@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, type Ref } from 'vue';
+import { onMounted, ref, watch, type Ref } from 'vue';
 import { vMaska } from "maska/vue"
 
 
@@ -20,30 +20,39 @@ const props = defineProps({
     lettersOnly: Boolean,
     numbersOnly: Boolean,
     value: String,
-    Password: Boolean
+    Password: Boolean,
+    background: String,
+    default: String,
 });
 
 const clear = () => {
     input.value = '';
 }
 let input = ref(props.value || '');
-const emit = defineEmits([`input`]);
+const emit = defineEmits([`input`, 'update:modelValue']);
 
-const emitInput = (e: Event) => {
+const emitInput = () => {
     // emit(`input`, (e.target as HTMLInputElement).value);
+    emit(`update:modelValue`, (input.value));
     emit(`input`, (input.value));
 
 }
+
+watch(() => input.value, () => {
+    handleInput();
+})
+
+
 onMounted(() => {
 
     emit(`input`, (input.value));
 });
 const asterisk: Ref<HTMLElement | null> = ref(null);
 
-const handleInput = (e: Event) => {
+const handleInput = () => {
 
     if (props.date) {
-        let value = (e.target as HTMLInputElement).value;
+        let value = input.value;
         if (value.length === 2) {
             if (parseInt(value) > 12) {
                 input.value = '12-';
@@ -76,17 +85,20 @@ const handleInput = (e: Event) => {
     }
 
     if (props.lettersOnly) {
-        let value = (e.target as HTMLInputElement).value;
+        let value = input.value;
         let regex = /^[a-zA-Z\s]*$/;
         if (!regex.test(value)) {
             input.value = value.slice(0, -1);
+            return;
         }
     }
     if (props.numbersOnly) {
-        let value = (e.target as HTMLInputElement).value;
+        let value = input.value;
         let regex = /^[0-9]*$/;
         if (!regex.test(value)) {
             input.value = value.slice(0, -1);
+            return;
+
         }
     }
 
@@ -96,7 +108,7 @@ const handleInput = (e: Event) => {
         asterisk.value?.classList.remove('active');
     }
 
-    emitInput(e);
+    emitInput();
 }
 const CalcHeight = () => {
     if (props.height) {
@@ -128,18 +140,21 @@ onMounted(() => {
 
 <template>
     <div class="required">
-        <input :disabled="$props.disabled" class="input-field" v-if="!props.height"
-            :style="`width:100%; ${CalcHeight()};${($props.error) ? 'border-color:red' : ''}`" v-maska="mask"
-            :type="props.Password ? 'password' : 'text'" v-model="input" @input="handleInput($event)">
+        <input :disabled="$props.disabled" class="input-field" v-if="!$props.height"
+            :style="`width:100%; ${CalcHeight()};${($props.error) ? 'border-color:red' : ''};${props.background ? `background-color:${props.background}` : 'white'}`"
+            v-maska="mask" type="text" v-model="input">
 
         <textarea :disabled="$props.disabled" class="input-field" v-if="$props.height"
-            :style="`width:100%;resize:none; ${CalcHeight()};${($props.error) ? 'border-color:red' : ''}`"
-            floatlabeltype type="text" v-model="input" @input="handleInput($event)" />
+            :style="`width:100%;resize:none; ${CalcHeight()};${($props.error) ? 'border-color:red' : ''}`" type="text"
+            v-model="input"></textarea>
 
         <label class="asterisk" ref="asterisk" :style="`${CalcTop()};`">{{ $props.placeHolder }}<span style="color:red"
                 v-if="props.required">
-                *</span> <span class='ps' v-if="$props.optional">(Optional)</span></label>
-        <!-- <label class="asterisk" ref="asterisk" v-if="!input" :style="`${CalcTop()};`">{{ $props.placeHolder }}<span style="color:red" v-if="props.required">
+                &nbsp;*</span> <span class='ps' v-if="$props.optional">(Optional)</span></label>
+
+        <!-- <label class="asterisk" ref="asterisk" 
+            :style="`${CalcTop()};${$dir() === 'ltr' ? 'left:1.25rem' : 'right:1.25rem'};`">{{ $props.placeHolder }}<span
+                :style="props.required ? `color:red` : `color:transparent`">
                 *</span> <span class='ps' v-if="$props.optional">(Optional)</span></label> -->
     </div>
 </template>

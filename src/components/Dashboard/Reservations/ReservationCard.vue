@@ -150,7 +150,7 @@ const dateChanged = (reservation: Reservation) => {
             <p><strong>Service: </strong> {{ props.reservation?.service?.title }}</p>
 
             <p><strong>Date: </strong> {{ parsedDate }}</p>
-            <!-- <Btn class="edit" @click="editDateModal?.openModal()">Edit Date</Btn> -->
+            <Btn class="edit" @click="editDateModal?.openModal()">Edit Date</Btn>
             <p><strong>Submitted at: </strong> {{ toDate($props.reservation?.created_at) }}</p>
             <p><strong>Returning patient: </strong> {{ props.reservation?.returning ? "Yes" : "No" }}</p>
 
