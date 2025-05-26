@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Btn from '@/components/sharedComponents/btn.vue';
 import DropDownInputField from '@/components/sharedComponents/DropDownInputField.vue';
+import InputField from '@/components/sharedComponents/InputField.vue';
 import type { Clinic, Schedule, Service } from '@/interfaces/content';
 import Http from '@/mixins/Http';
 import { onMounted, reactive, ref, type Ref } from 'vue';
@@ -24,8 +25,10 @@ const status: Ref<string> = ref('all');
 const clinic_id: Ref<number | null> = ref(null);
 const startDate: Ref<string> = ref('');
 const endDate: Ref<string> = ref(`${new Date().toISOString().split('T')[0]}`);
+const searchQuery: Ref<string> = ref('');
 const query: Ref<string> = ref('');
 const activeButton = ref('all');
+
 
 const emit = defineEmits(['statusChanged', 'paginate', 'exportCsv']);
 
@@ -59,6 +62,15 @@ const changeClinic = (event: string) => {
         emit('statusChanged', constructQuery());
 
     }
+
+}
+
+const searchFor = (event: string) => {
+    console.log(event);
+    searchQuery.value = event;
+    // console.log(searchQuery.value);
+    currentPage.value = 1;
+    emit('statusChanged', constructQuery());
 
 }
 
@@ -100,6 +112,9 @@ const constructQuery = () => {
     }
     if (endDate.value) {
         q.push(`end_date=${endDate.value}`);
+    }
+    if (searchQuery.value) {
+        q.push(`search=${searchQuery.value}`);
     }
     query.value = q.join('&');
 
@@ -154,7 +169,8 @@ onMounted(async () => {
 
 
     <div class="header">
-        <h1>Reservations</h1>
+        <!-- <h3>Reservations</h3> -->
+        <InputField placeHolder="Search" @input="searchFor($event)"/>
         <Btn :loading="downloading" class="btn export" @click="exportCsv()">+ Export</Btn :loading="downloading">
 
 
