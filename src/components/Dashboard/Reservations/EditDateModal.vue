@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import Btn from '@/components/sharedComponents/btn.vue';
-import InputField from '@/components/sharedComponents/InputField.vue';
-import type { Reservation } from '@/interfaces/content';
-import Http from '@/mixins/Http';
-import { onMounted, reactive, ref, watch } from 'vue';
-import moment from 'moment-timezone';
-
-
+import Btn from "@/components/sharedComponents/btn.vue";
+import InputField from "@/components/sharedComponents/InputField.vue";
+import type { Reservation } from "@/interfaces/content";
+import Http from "@/mixins/Http";
+import { onMounted, reactive, ref, watch } from "vue";
+import moment from "moment-timezone";
 
 const props = defineProps({
     reservation: {
@@ -15,53 +13,55 @@ const props = defineProps({
 });
 
 const form = reactive({
-    date: '',
-    time: '',
-})
+    date: "",
+    time: "",
+});
 
 const loading = ref(false);
 
+const emit = defineEmits(["updateReservation"]);
+
 const submit = async () => {
-    console.log('submit');
+    console.log("submit");
 
     // form.date is in "mm-dd-yyyy", form.time is in "HH:mm"
     const dateTimeString = `${form.date} ${form.time}`;
-    const dateObj = moment.tz(dateTimeString, 'MM-DD-YYYY HH:mm', 'America/New_York');
+    const dateObj = moment.tz(dateTimeString, "MM-DD-YYYY HH:mm", "America/New_York");
     const date_in_unix = dateObj.valueOf();
 
-    console.log(dateObj);
-    console.log(date_in_unix);
-
     loading.value = true;
-    const res = await Http.put(`reservation/update/date/${props.reservation?.id}`, { date: date_in_unix }, {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-    });
+    const res = await Http.put(
+        `reservation/update/date/${props.reservation?.id}`,
+        { date: date_in_unix },
+        {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        }
+    );
     loading.value = false;
+    if (res.status === 401) window.location.href = "/login";
+    // if (res.status === 200) { emit('newClinic', res.data);
+    if (res.status === 200) {
+        window.location.reload();
+    } else {
+        alert(res.data.error);
+    }
 
-    console.log(res)
-
-
-
-
-}
+    emit("updateReservation", res.data);
+};
 
 onMounted(() => {
     if (props.reservation && props.reservation.date_in_unix) {
         const date = new Date(props.reservation.date_in_unix * 1000);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, "0");
+        const month = String(date.getMonth() + 1).padStart(2, "0");
         const year = date.getFullYear();
         form.date = `${day}-${month}-${year}`;
 
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, "0");
+        const minutes = String(date.getMinutes()).padStart(2, "0");
         form.time = `${hours}:${minutes}`;
-
     }
-
-})
-
-
+});
 </script>
 
 <template>
@@ -70,7 +70,6 @@ onMounted(() => {
         </InputField>
         <InputField placeHolder="Time" mask="##:##" @input="form.time = $event"></InputField>
         <Btn :loading="loading" @click="submit">Submit</Btn>
-
     </div>
 </template>
 
