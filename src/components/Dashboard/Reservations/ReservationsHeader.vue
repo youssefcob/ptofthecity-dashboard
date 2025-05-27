@@ -29,6 +29,9 @@ const searchQuery: Ref<string> = ref('');
 const query: Ref<string> = ref('');
 const activeButton = ref('all');
 
+const startReservationDate: Ref<string> = ref('');
+const endReservationDate: Ref<string> = ref('');
+
 
 const emit = defineEmits(['statusChanged', 'paginate', 'exportCsv']);
 
@@ -91,6 +94,23 @@ const setEndDate = (event: Event) => {
 
 }
 
+const setStartReservationDate = (event: Event) => {
+    startReservationDate.value = (event.target as HTMLInputElement).value;
+    // console.log(startReservationDate.value);
+
+    currentPage.value = 1;
+    emit('statusChanged', constructQuery());
+
+}
+
+const setEndReservationDate = (event: Event) => {
+    endReservationDate.value = (event.target as HTMLInputElement).value;
+    // console.log(endReservationDate.value);
+    currentPage.value = 1;
+    emit('statusChanged', constructQuery());
+
+}
+
 const exportCsv = () => {
     emit('exportCsv', constructQuery());
 }
@@ -113,9 +133,16 @@ const constructQuery = () => {
     if (endDate.value) {
         q.push(`end_date=${endDate.value}`);
     }
+    if (startReservationDate.value) {
+        q.push(`start_reservation_date=${startReservationDate.value}`);
+    }
+    if (endReservationDate.value) {
+        q.push(`end_reservation_date=${endReservationDate.value}`);
+    }
     if (searchQuery.value) {
         q.push(`search=${searchQuery.value}`);
     }
+
     query.value = q.join('&');
 
     return query.value;
@@ -201,13 +228,24 @@ onMounted(async () => {
                 </option>
             </select>
         </div>
-        <div class="date-wrapper">
+         <div class="date-wrapper">
             <div class="date">
                 <label for="start">Start date:</label>
-                <input type="date" name="start" @change="setStartDate($event)" />
+                <input type="date" name="start" @change="setStartReservationDate($event)" />
             </div>
             <div class="date">
                 <label for="end">End date:</label>
+                <input type="date" name="end" @change="setEndReservationDate($event)"
+                    :value="new Date().toISOString().split('T')[0]" />
+            </div>
+        </div>
+        <div class="date-wrapper">
+            <div class="date">
+                <label for="start">Start submitted at date:</label>
+                <input type="date" name="start" @change="setStartDate($event)" />
+            </div>
+            <div class="date">
+                <label for="end">End submitted at date:</label>
                 <input type="date" name="end" @change="setEndDate($event)"
                     :value="new Date().toISOString().split('T')[0]" />
             </div>
