@@ -21,7 +21,10 @@ const toDate = (timestamp: number | string | undefined) => {
 
 const activeButton = ref(props.job?.isAvailable);
 
-const changeAvailability = async (st: 0 | 1) => {
+console.log('activebutton',activeButton.value);
+console.log('props.job.isAvailable',props.job.isAvailable);
+
+const changeAvailability = async (st: false | true) => {
     if (activeButton.value === st) return;
     const res = await Http.put(`career/jobs/${props.job.id}/${st}`,{}, {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -50,8 +53,8 @@ const changeAvailability = async (st: 0 | 1) => {
         <div class="card-header">
             <h3>{{ props.job.title }}</h3>
             <div class="btns-wrapper">
-                    <button :class="{ active: activeButton === 1 }" class="btn" @click="changeAvailability(1)">Available</button>
-                    <button :class="{ active: activeButton === 0 }" class="btn" @click="changeAvailability(0)">UnAvailable</button>
+                    <button :class="{ active: activeButton === true }" class="btn" @click="changeAvailability(true)">Available</button>
+                    <button :class="{ active: activeButton === false }" class="btn" @click="changeAvailability(false)">UnAvailable</button>
 
                 </div>
         </div>
