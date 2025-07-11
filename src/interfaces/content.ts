@@ -206,7 +206,7 @@ export type Job = {
     id: number;
     title: string;
     description: string;
-    isAvailable: number;
+    isAvailable: number | boolean;
     created_at: string;
     updated_at: string;
 }
