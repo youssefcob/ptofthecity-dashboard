@@ -2,6 +2,8 @@
 import type { Message } from '@/interfaces/content';
 import Http from '@/mixins/Http';
 import { ref, type Ref } from 'vue';
+import moment from 'moment-timezone';
+
 
 
 const props = defineProps({
@@ -10,6 +12,12 @@ const props = defineProps({
         required: true
     },
 });
+
+const toDate = (timestamp: number | string | undefined) => {
+    if (!timestamp) return '';
+    const nyDate = moment.tz(timestamp, 'America/New_York');
+    return nyDate.format('MM-DD-YYYY HH:mm');
+}
 
 const activeButton:Ref<number> = ref(props.message?.is_read);
 
@@ -59,6 +67,7 @@ const changeMessageStatus = async (st: number) => {
             <p><strong>Email: </strong>{{ props.message?.email }}</p>
 
             <h3>Message Info:</h3>
+            <p><strong>Submitted at:</strong>{{ toDate(props.message?.created_at) }}</p>
 
             <p><strong>Subject: </strong> {{ props.message?.subject }}</p>
             <p><strong>Message: </strong> {{ props.message?.message }}</p>

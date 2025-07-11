@@ -148,9 +148,25 @@ export type Message = {
 }
 
 export type Count = {
-    title: string;
-    count: number;
-}
+    reservations: {
+        pending: number;
+        confirmed: number;
+        cancelled: number;
+    };
+    eligibility: {
+        pending: number;
+        accepted: number;
+        cancelled: number;
+    };
+    careers: {
+        unread: number;
+        read: number;
+    };
+    messages: {
+        unread: number;
+        read: number;
+    };
+};
 
 export type Career = {
     city: string;

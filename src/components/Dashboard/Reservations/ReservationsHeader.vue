@@ -196,58 +196,63 @@ onMounted(async () => {
 
 
     <div class="header">
-        <!-- <h3>Reservations</h3> -->
-        <InputField placeHolder="Search" @input="searchFor($event)"/>
-        <Btn :loading="downloading" class="btn export" @click="exportCsv()">+ Export</Btn :loading="downloading">
+        <div class="filter-container">
+        <h1>Reservations</h1>
+
+            <InputField placeHolder="Search" @input="searchFor($event)" />
+            <Btn :loading="downloading" class="btn export" @click="exportCsv()">+ Export</Btn :loading="downloading">
 
 
-        <div class="pagination-wrapper">
-            <button @click="page(-1)" class="btn "><</button>
-            <div><span>{{ props.page }}</span></div>
-            <button @click="page(1)" class="btn ">></button>
-        </div>
-        
-        <div class="clinic-wrapper">
-            <DropDownInputField :list="clinicNames" placeHolder="clinics" @input="changeClinic($event)" />
-        </div>
-        <div class="btn-search-wrapper">
-            <!-- <button class="btn" :class="{ active: activeButton === 'pending' }"
+            <div class="pagination-wrapper">
+                <button @click="page(-1)" class="btn ">&lt;</button>
+                <div><span>{{ props.page }}</span></div>
+                <button @click="page(1)" class="btn ">&gt;</button>
+            </div>
+
+            <div class="clinic-wrapper">
+                <DropDownInputField :list="clinicNames" placeHolder="clinics" @input="changeClinic($event)" />
+            </div>
+            <div class="btn-search-wrapper">
+                <!-- <button class="btn" :class="{ active: activeButton === 'pending' }"
                 @click="changeStatus('pending')">Pending</button>
             <button class="btn" :class="{ active: activeButton === 'confirmed' }"
                 @click="changeStatus('confirmed')">Confirmed</button>
             <button class="btn" :class="{ active: activeButton === 'cancelled' }"
                 @click="changeStatus('cancelled')">Cancelled</button> -->
 
-            <select v-model="activeButton" @change="changeStatus(activeButton)">
-                <option class="btn" :class="{ active: activeButton === 'all' }" value="all">All</option>
+                <select v-model="activeButton" @change="changeStatus(activeButton)">
+                    <option class="btn" :class="{ active: activeButton === 'all' }" value="all">All</option>
 
-                <option class="btn" :class="{ active: activeButton === 'pending' }" value="pending">Pending</option>
-                <option class="btn" :class="{ active: activeButton === 'confirmed' }" value="confirmed">Confirmed
-                </option>
-                <option class="btn" :class="{ active: activeButton === 'cancelled' }" value="cancelled">Cancelled
-                </option>
-            </select>
-        </div>
-         <div class="date-wrapper">
-            <div class="date">
-                <label for="start">Start date:</label>
-                <input type="date" name="start" @change="setStartReservationDate($event)" />
-            </div>
-            <div class="date">
-                <label for="end">End date:</label>
-                <input type="date" name="end" @change="setEndReservationDate($event)"
-                    :value="new Date().toISOString().split('T')[0]" />
+                    <option class="btn" :class="{ active: activeButton === 'pending' }" value="pending">Pending</option>
+                    <option class="btn" :class="{ active: activeButton === 'confirmed' }" value="confirmed">Confirmed
+                    </option>
+                    <option class="btn" :class="{ active: activeButton === 'cancelled' }" value="cancelled">Cancelled
+                    </option>
+                </select>
             </div>
         </div>
-        <div class="date-wrapper">
-            <div class="date">
-                <label for="start">Start submitted at date:</label>
-                <input type="date" name="start" @change="setStartDate($event)" />
+        <div class="date-container">
+            <div class="date-wrapper">
+                <div class="date">
+                    <label for="start">Date From:</label>
+                    <input type="date" name="start" @change="setStartReservationDate($event)" />
+                </div>
+                <div class="date">
+                    <label for="end">To:</label>
+                    <input type="date" name="end" @change="setEndReservationDate($event)"
+                        :value="new Date().toISOString().split('T')[0].toString()" />
+                </div>
             </div>
-            <div class="date">
-                <label for="end">End submitted at date:</label>
-                <input type="date" name="end" @change="setEndDate($event)"
-                    :value="new Date().toISOString().split('T')[0]" />
+            <div class="date-wrapper">
+                <div class="date">
+                    <label for="start">Submission date from:</label>
+                    <input type="date" name="start" @change="setStartDate($event)" />
+                </div>
+                <div class="date">
+                    <label for="end">To:</label>
+                    <input type="date" name="end" @change="setEndDate($event)"
+                        :value="new Date().toISOString().split('T')[0]" />
+                </div>
             </div>
         </div>
     </div>
@@ -260,10 +265,20 @@ onMounted(async () => {
     // height:30px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
 
-    align-items: center;
+    // align-items: center;
 
+    .filter-container,.date-container{
+        display:flex;
+    }
+    .filter-container {
+        justify-content: space-between;
+    }
+    .date-container {
+        justify-content: space-around;
+        margin-top: 1rem;
+    }
     .pagination-wrapper {
         display: flex;
         gap: 0.5rem;
@@ -322,7 +337,7 @@ onMounted(async () => {
         gap: 1rem;
         align-items: center;
         justify-content: center;
-        flex-direction: column;
+        // flex-direction: column;
 
         .date {
             display: flex;
